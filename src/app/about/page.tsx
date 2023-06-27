@@ -11,7 +11,7 @@ const page = () => {
           <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
             <img src="/Arrow.svg" alt="" />
           </div>
-          <p className=" text-[32px] font-semibold">About</p>
+          <p className=" text-[32px] font-semibold font-roboto">About</p>
         </div>
 
         <div className=" flex flex-col gap-8">
@@ -42,7 +42,7 @@ const page = () => {
 
               <div className=" bg-[#1F2329] rounded-[5px] flex h-[60px] px-6 justify-between items-center">
                 <p className=" font-medium text-white">0xB754369b3a7C...97C398a0caa5</p>
-                <button className=" text-[#ED7770]">unverified</button>
+                <button className=" text-[#ED7770] font-roboto font-medium">unverified</button>
               </div>
             </div>
           </div>

@@ -10,7 +10,7 @@ const page = () => {
           <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
             <img src="/Arrow.svg" alt="" />
           </div>
-          <p className=" text-[32px] font-semibold">Swap</p>
+          <p className=" text-[32px] font-semibold font-roboto">Swap</p>
         </div>
 
         <div className=" flex p-6 flex-col gap-6 items-center">
@@ -20,7 +20,7 @@ const page = () => {
               <div className=" flex px-6 justify-between bg-[#1F2329] h-[60px]">
                 <div className=" flex gap-4 items-center">
                   <img src="/profile.svg" width={"40px"} alt="" />
-                  <p className=" text-white font-medium underline">
+                  <p className=" text-white font-medium underline font-roboto">
                     0xB754369b3a7C...97C398a0caa5
                   </p>
                 </div>

@@ -11,7 +11,7 @@ const page = () => {
           <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
             <img src="/Arrow.svg" alt="" />
           </div>
-          <p className=" text-[32px] font-semibold">Forum</p>
+          <p className=" text-[32px] font-semibold font-roboto">Forum</p>
         </div>
 
         <div className=" gap-8 h-full flex">

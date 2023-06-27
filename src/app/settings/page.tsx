@@ -10,7 +10,7 @@ const page = () => {
           <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
             <img src="/Arrow.svg" alt="" />
           </div>
-          <p className=" text-[32px] font-semibold">Settings</p>
+          <p className=" text-[32px] font-semibold font-roboto">Settings</p>
         </div>
         <div className=" bg-[#1C1E23] p-8 gap-32 flex flex-col rounded-[10px]">
           <div className=" flex flex-col gap-8">
@@ -87,7 +87,7 @@ const page = () => {
                   <p className=" underline text-white">
                     0xB754369b3a7C...97C398a0caa5
                   </p>
-                  <button className=" text-[#ED7770] font-medium">
+                  <button className=" text-[#ED7770] font-medium font-roboto">
                     unverified
                   </button>
                 </div>
@@ -153,11 +153,11 @@ const page = () => {
                       </p>
                       <img src="/LookUp.svg" alt="" />
                     </div>
-                    <p>USDC</p>
+                    <p className=" font-roboto font-medium">USDC</p>
                   </div>
                   <div className=" flex gap-4 items-center">
                     <div className=" w-[20px] h-[20px] bg-white" />
-                    <p>Pays a fee on swap</p>
+                    <p className=" font-roboto font-medium">Pays a fee on swap</p>
                   </div>
                 </div>
               </div>
@@ -184,7 +184,7 @@ const page = () => {
             </div>
 
             <div className=" flex flex-col gap-4">
-              <p className=" text-white text-xl font-medium">
+              <p className=" text-white text-xl font-semibold font-roboto">
                 Pause and unpause on all swaps
               </p>
               <button className=" bg-[#F5F150] text-[20px] px-8 rounded-[5px] text-[#F00] font-medium h-[60px] w-min whitespace-nowrap">
@@ -193,7 +193,7 @@ const page = () => {
             </div>
 
             <div className=" flex flex-col gap-4">
-              <p className=" text-white text-xl font-medium">
+              <p className=" text-white text-xl font-semibold font-roboto">
                 Renounces ownership
               </p>
               <button className=" bg-[#F5F150] text-[20px] px-8 rounded-[5px] text-[#F00] font-medium h-[60px] w-min whitespace-nowrap">
