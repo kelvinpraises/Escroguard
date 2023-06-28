@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Link from "next/link";
 import React from "react";
 
 const page = () => {
@@ -7,11 +8,14 @@ const page = () => {
       <Header />
       <div className=" flex flex-col p-8 gap-8">
         <div className=" flex items-center gap-4">
-          <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
-            <img src="/Arrow.svg" alt="" />
-          </div>
+          <Link href={"/dashboard"}>
+            <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
+              <img src="/Arrow.svg" alt="" />
+            </div>
+          </Link>
           <p className=" text-[32px] font-semibold font-roboto">Settings</p>
         </div>
+
         <div className=" bg-[#1C1E23] p-8 gap-32 flex flex-col rounded-[10px]">
           <div className=" flex flex-col gap-8">
             <p className=" font-semibold text-[32px]">General</p>
@@ -157,7 +161,9 @@ const page = () => {
                   </div>
                   <div className=" flex gap-4 items-center">
                     <div className=" w-[20px] h-[20px] bg-white" />
-                    <p className=" font-roboto font-medium">Pays a fee on swap</p>
+                    <p className=" font-roboto font-medium">
+                      Pays a fee on swap
+                    </p>
                   </div>
                 </div>
               </div>
@@ -197,7 +203,7 @@ const page = () => {
                 Renounces ownership
               </p>
               <button className=" bg-[#F5F150] text-[20px] px-8 rounded-[5px] text-[#F00] font-medium h-[60px] w-min whitespace-nowrap">
-              RENOUNCE OWNERSHIP
+                RENOUNCE OWNERSHIP
               </button>
             </div>
           </div>

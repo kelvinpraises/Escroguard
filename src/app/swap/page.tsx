@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Link from "next/link";
 import React from "react";
 
 const page = () => {
@@ -7,9 +8,11 @@ const page = () => {
       <Header />
       <div className=" flex flex-col p-8 gap-8">
         <div className=" flex items-center gap-4">
-          <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
-            <img src="/Arrow.svg" alt="" />
-          </div>
+          <Link href={"/dashboard"}>
+            <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
+              <img src="/Arrow.svg" alt="" />
+            </div>
+          </Link>
           <p className=" text-[32px] font-semibold font-roboto">Swap</p>
         </div>
 

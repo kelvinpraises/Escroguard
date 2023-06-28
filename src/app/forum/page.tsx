@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Link from "next/link";
 import React from "react";
 
 const page = () => {
@@ -8,9 +9,11 @@ const page = () => {
 
       <div className=" flex flex-col p-8 gap-8 h-[calc(100vh-124px)]">
         <div className=" flex items-center gap-4">
-          <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
-            <img src="/Arrow.svg" alt="" />
-          </div>
+          <Link href={"/dashboard"}>
+            <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
+              <img src="/Arrow.svg" alt="" />
+            </div>
+          </Link>
           <p className=" text-[32px] font-semibold font-roboto">Forum</p>
         </div>
 
@@ -24,7 +27,11 @@ const page = () => {
 
           <div className=" flex flex-col justify-end gap-4 w-full">
             <div className=" bg-[#1F2329] px-6 h-[60px] rounded-[5px] flex items-center ">
-              <input type="text" className=" w-full outline-none bg-[#1F2329] h-full" placeholder="Message Main" />
+              <input
+                type="text"
+                className=" w-full outline-none bg-[#1F2329] h-full"
+                placeholder="Message Main"
+              />
             </div>
           </div>
         </div>

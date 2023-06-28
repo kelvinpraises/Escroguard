@@ -13,10 +13,10 @@ const page = () => {
 
           <div className=" flex flex-wrap gap-8">
             {[
-              { img: "SwapW.svg", name: "Swap" },
-              { img: "Chat.svg", name: "Forum" },
-              { img: "Info.svg", name: "About" },
-              { img: "Setting.svg", name: "Settings" },
+              { img: "SwapW.svg", name: "swap" },
+              { img: "Chat.svg", name: "forum" },
+              { img: "Info.svg", name: "about" },
+              { img: "Setting.svg", name: "settings" },
             ].map((item, i) => (
               <BlackCard img={item.img} name={item.name} />
             ))}

@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Link from "next/link";
 import React from "react";
 
 const page = () => {
@@ -8,9 +9,11 @@ const page = () => {
 
       <div className=" flex flex-col p-8 gap-8 h-[calc(100vh-124px)]">
         <div className=" flex items-center gap-4">
-          <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
-            <img src="/Arrow.svg" alt="" />
-          </div>
+          <Link href={"/dashboard"}>
+            <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
+              <img src="/Arrow.svg" alt="" />
+            </div>
+          </Link>
           <p className=" text-[32px] font-semibold font-roboto">About</p>
         </div>
 
@@ -37,12 +40,18 @@ const page = () => {
             <div className=" flex flex-col gap-8">
               <div className=" bg-[#1F2329] rounded-[5px] flex h-[60px] px-6 gap-4 items-center">
                 <img src="/profile.svg" width={"40px"} alt="" />
-                <p className=" font-medium text-white">0xB754369b3a7C...97C398a0caa5</p>
+                <p className=" font-medium text-white">
+                  0xB754369b3a7C...97C398a0caa5
+                </p>
               </div>
 
               <div className=" bg-[#1F2329] rounded-[5px] flex h-[60px] px-6 justify-between items-center">
-                <p className=" font-medium text-white">0xB754369b3a7C...97C398a0caa5</p>
-                <button className=" text-[#ED7770] font-roboto font-medium">unverified</button>
+                <p className=" font-medium text-white">
+                  0xB754369b3a7C...97C398a0caa5
+                </p>
+                <button className=" text-[#ED7770] font-roboto font-medium">
+                  unverified
+                </button>
               </div>
             </div>
           </div>
