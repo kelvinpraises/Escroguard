@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import SwapCollapse from "@/components/SwapCollapse";
 import Link from "next/link";
 import React from "react";
 
@@ -32,10 +33,7 @@ const Swap = () => {
             <div className=" flex gap-8 items-start">
               <div className=" flex flex-col gap-8 w-[237px]">
                 <p className=" text-white text-xl font-medium">You Send</p>
-                <div className=" bg-[#1F2329] rounded-[5px] h-[60px] flex justify-between px-6 items-center">
-                  <p>ETH</p>
-                  <p>v</p>
-                </div>
+                <SwapCollapse />
                 <input
                   type="text"
                   className=" bg-[#1F2329] px-6 h-[60px] rounded-[5px] outline-none "
@@ -43,10 +41,8 @@ const Swap = () => {
               </div>
               <div className=" flex flex-col gap-8 w-[237px]">
                 <p className=" text-white text-xl font-medium">You Receive</p>
-                <div className=" bg-[#1F2329] rounded-[5px] h-[60px] flex justify-between px-6 items-center">
-                  <p>ETH</p>
-                  <p>v</p>
-                </div>
+                <SwapCollapse />
+
                 <input
                   type="text"
                   className=" bg-[#1F2329] px-6 h-[60px] rounded-[5px] outline-none"
