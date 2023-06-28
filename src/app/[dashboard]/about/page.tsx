@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import Link from "next/link";
 import React from "react";
 
-const page = () => {
+const About = () => {
   return (
     <div className=" flex flex-col">
       <Header />
@@ -61,4 +61,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default About;

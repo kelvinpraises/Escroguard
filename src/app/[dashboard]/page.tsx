@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import SpentCard from "@/components/SpentCard";
 import Transaction from "@/components/Transaction";
 
-const page = () => {
+const Dashboard = () => {
   return (
     <div className=" flex flex-col">
       <Header />
@@ -62,4 +62,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Dashboard;
