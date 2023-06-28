@@ -1,7 +1,10 @@
-import SwapBox from "@/components/SwapBox";
-import Image from "next/image";
+"use client";
+import HomeActions from "@/components/HomeActions";
+import { HomeAction } from "@/type";
+import { useState } from "react";
 
 export default function Home() {
+  const [action, setAction] = useState<HomeAction | null>(null);
   return (
     <div className=" flex w-full items-start h-screen">
       <div className=" flex flex-col bg-white gap-[128px] p-8 h-full w-full">
@@ -25,31 +28,52 @@ export default function Home() {
             </button> */}
 
             {/* links */}
-            <div className=" min-w-[530px] flex p-4 gap-4 items-center rounded-[5px] border-[2px] border-[#E0E0E0]">
+            <div
+              onClick={() => setAction("create")}
+              className=" min-w-[530px] flex p-4 gap-4 items-center rounded-[5px] border-[2px] border-[#E0E0E0] cursor-pointer"
+            >
               <img src="Plus.svg" alt="" />
               <div className=" flex flex-col gap-1">
-                <p className=" text-[#292929] text-xl font-medium">Create Swap</p>
-                <p className=" text-[#5B5B5B] font-medium">Create a new private swap space</p>
+                <p className=" text-[#292929] text-xl font-medium">
+                  Create Swap
+                </p>
+                <p className=" text-[#5B5B5B] font-medium">
+                  Create a new private swap space
+                </p>
               </div>
             </div>
-            <div className=" min-w-[530px] flex p-4 gap-4 items-center rounded-[5px] border-[2px] border-[#E0E0E0]">
+            <div
+              onClick={() => setAction("join")}
+              className=" min-w-[530px] flex p-4 gap-4 items-center rounded-[5px] border-[2px] border-[#E0E0E0] cursor-pointer"
+            >
               <img src="Login.svg" alt="" />
               <div className=" flex flex-col gap-1">
-                <p className=" text-[#292929] text-xl font-medium">Join a Swap</p>
-                <p className=" text-[#5B5B5B] font-medium">Join a private swap space</p>
+                <p className=" text-[#292929] text-xl font-medium">
+                  Join a Swap
+                </p>
+                <p className=" text-[#5B5B5B] font-medium">
+                  Join a private swap space
+                </p>
               </div>
             </div>
-            <div className=" min-w-[530px] flex p-4 gap-4 items-center rounded-[5px] border-[2px] border-[#E0E0E0]">
+            <div
+              onClick={() => setAction("joined")}
+              className=" min-w-[530px] flex p-4 gap-4 items-center rounded-[5px] border-[2px] border-[#E0E0E0] cursor-pointer"
+            >
               <img src="Swap.svg" alt="" />
               <div className=" flex flex-col gap-1">
-                <p className=" text-[#292929] text-xl font-medium">Joined Swaps</p>
-                <p className=" text-[#5B5B5B] font-medium">View all your joined swap spaces</p>
+                <p className=" text-[#292929] text-xl font-medium">
+                  Joined Swaps
+                </p>
+                <p className=" text-[#5B5B5B] font-medium">
+                  View all your joined swap spaces
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <SwapBox />
+      <HomeActions action={action} />
     </div>
   );
 }

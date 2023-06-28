@@ -2,12 +2,16 @@ import BlackCard from "@/components/BlackCard";
 import Header from "@/components/Header";
 import SpentCard from "@/components/SpentCard";
 import Transaction from "@/components/Transaction";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+
 
 const Dashboard = () => {
   return (
     <div className=" flex flex-col">
       <Header />
       <div className=" flex flex-col p-8 gap-[128px]">
+      <ConnectButton />
+
         <div className=" flex gap-[64px]">
           <SpentCard />
 
