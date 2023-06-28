@@ -49,3 +49,5 @@ export interface DeployProps {
     symbol: string;
   }>;
 }
+
+export type HomeAction = "create" | "join" | "joined";
