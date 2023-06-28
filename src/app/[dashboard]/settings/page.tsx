@@ -1,8 +1,15 @@
+"use client";
 import Header from "@/components/Header";
+import * as Toggle from "@radix-ui/react-toggle";
+import * as Collapsible from "@radix-ui/react-collapsible";
+import { RowSpacingIcon, Cross2Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import React from "react";
+import { useState } from "react";
+import MembersCollapsible from "@/components/MembersCollapsible";
+import TokenCollapsible from "@/components/TokenCollapsible";
 
 const Settings = () => {
+  const [open, setOpen] = useState(false);
   return (
     <div className=" flex flex-col">
       <Header />
@@ -75,28 +82,7 @@ const Settings = () => {
               </button>
             </div>
 
-            <div className=" flex flex-col gap-4 w-[700px]">
-              <div className=" flex justify-between">
-                <p className=" text-white text-xl font-medium">Members list</p>
-                <img src="/Down.svg" alt="" />
-              </div>
-              <div className=" flex flex-col gap-8">
-                <div className=" bg-[#1F2329] h-[60px] px-6 rounded-[5px] flex gap-4 items-center">
-                  <img src="/profile.svg" width={"40px"} alt="" />
-                  <p className=" underline text-white">
-                    0xB754369b3a7C...97C398a0caa5
-                  </p>
-                </div>
-                <div className=" bg-[#1F2329] h-[60px] px-6 rounded-[5px] flex justify-between items-center">
-                  <p className=" underline text-white">
-                    0xB754369b3a7C...97C398a0caa5
-                  </p>
-                  <button className=" text-[#ED7770] font-medium font-roboto">
-                    unverified
-                  </button>
-                </div>
-              </div>
-            </div>
+            <MembersCollapsible />
           </div>
 
           <div className=" flex flex-col gap-8">
@@ -141,33 +127,7 @@ const Settings = () => {
                 Add
               </button>
             </div>
-
-            <div className=" flex flex-col gap-4 w-[700px]">
-              <div className=" flex justify-between">
-                <p className=" text-white text-xl font-medium">Tokens list</p>
-                <img src="/Down.svg" alt="" />
-              </div>
-
-              <div className=" flex flex-col gap-8">
-                <div className=" bg-[#1F2329]  p-6 rounded-[5px] flex flex-col gap-6 justify-between ">
-                  <div className=" flex justify-between items-center w-full">
-                    <div className=" flex gap-2">
-                      <p className=" underline text-white">
-                        0xB754369b3a7C...97C398a0caa5
-                      </p>
-                      <img src="/LookUp.svg" alt="" />
-                    </div>
-                    <p className=" font-roboto font-medium">USDC</p>
-                  </div>
-                  <div className=" flex gap-4 items-center">
-                    <div className=" w-[20px] h-[20px] bg-white" />
-                    <p className=" font-roboto font-medium">
-                      Pays a fee on swap
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <TokenCollapsible />
           </div>
 
           <div className=" flex flex-col gap-8">
@@ -193,9 +153,14 @@ const Settings = () => {
               <p className=" text-white text-xl font-semibold font-roboto">
                 Pause and unpause on all swaps
               </p>
-              <button className=" bg-[#F5F150] text-[20px] px-8 rounded-[5px] text-[#F00] font-medium h-[60px] w-min whitespace-nowrap">
+              <Toggle.Root
+                className=" bg-[#F5F150] text-[20px] px-8 rounded-[5px] text-[#F00] font-medium h-[60px] w-min whitespace-nowrap data-[state=on]:bg-[#f7f695]"
+                // aria-label="Toggle italic"
+              >
+                {/* <button className=" bg-[#F5F150] text-[20px] px-8 rounded-[5px] text-[#F00] font-medium h-[60px] w-min whitespace-nowrap"> */}
                 PAUSE SWAP CONTRACT
-              </button>
+                {/* </button> */}
+              </Toggle.Root>
             </div>
 
             <div className=" flex flex-col gap-4">
