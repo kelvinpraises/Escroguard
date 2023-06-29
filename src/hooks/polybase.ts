@@ -17,17 +17,11 @@ export interface User {
 export interface Space {
   id: string;
   name: string;
-  emoji: string;
-  description: string;
   contractAddress: string;
   adminAddress: string;
-  pushChannelAddress: string;
-  participants: string[];
-  meetingsId: string[];
-  recordingsId: string[];
-  assetsId: string[];
-  guidesId: string[];
-  eventsId: string[];
+  members: string[];
+  tokensId: string[];
+  chatsId: string[];
   updatedAt: number;
   createdAt: number;
 }
@@ -49,7 +43,6 @@ export type PolybaseType = ReturnType<typeof usePolybase>;
 
 const userReference = db.collection("User");
 const spaceReference = db.collection("Space");
-const meetingReference = db.collection("Meeting");
 const chatReference = db.collection("Chat");
 
 const usePolybase = () => {
@@ -132,10 +125,9 @@ const usePolybase = () => {
 
   const createSpace = async ({
     name,
-    emoji,
-    description,
+    contractAddress,
     adminAddress,
-    participants,
+    members,
     userId,
   }: Space & { userId: string }) => {
     if (!userId) return;
@@ -144,10 +136,9 @@ const usePolybase = () => {
       .create([
         randomId, // id
         name, // name
-        emoji, // emoji
-        description, // description
+        contractAddress, // contractAddress
         adminAddress, // adminAddress
-        participants, // participants
+        members,
         Date.now(), // createdAt
       ])
       .then(() => {
@@ -162,9 +153,7 @@ const usePolybase = () => {
   const updateSpace = async (spaceId: string, space: Partial<Space>) => {
     await spaceReference.record(spaceId).call("updateSpaceInfo", [
       space.name || "", // name
-      space.emoji || "", // emoji
-      space.description || "", // description
-      space.participants || [], // participants
+      space.members || [], // participants
       Date.now(), // updatedAt
     ]);
   };
@@ -205,7 +194,7 @@ const usePolybase = () => {
         Date.now(), // createdAt
       ])
       .then(() => {
-        meetingReference
+        spaceReference
           .record(meetingId)
           .call("setChatId", [randomId, Date.now()]);
       });
