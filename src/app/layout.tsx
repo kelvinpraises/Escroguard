@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const polybase = usePolybase();
-  useEscroguard(polybase);
+  useEscroguard({polybase});
 
   return (
     <html lang="en">

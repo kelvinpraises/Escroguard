@@ -77,7 +77,7 @@ export const ConnectButton = ({ style }: { style?: React.CSSProperties }) => {
                     )}
                     {chain.name}
                   </button>
-                  <button onClick={openAccountModal} type="button">
+                  <button style={{background: "red"}} onClick={openAccountModal} type="button">
                     {account.displayName}
                     {account.displayBalance
                       ? ` (${account.displayBalance})`

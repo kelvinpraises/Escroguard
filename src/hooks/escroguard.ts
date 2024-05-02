@@ -1,54 +1,29 @@
-import { useEffect } from "react";
-import { PolybaseType, Space } from "./polybase";
-import { useAccount } from "wagmi";
+import { ContractType } from "./swap/cancel";
+import { PolybaseType } from "./polybase";
 
 export type OrionType = ReturnType<typeof useEscroguard>;
 
-const useEscroguard = (polybase?: PolybaseType) => {
-  /* LOGIN */
-  const { isConnected } = useAccount();
-  useEffect(() => {
-    if (!polybase) return;
-    const { login, logout, loggedIn } = polybase;
-
-    if (isConnected && !loggedIn) {
-      login();
-      // TODO: put user info into state
-    }
-
-    if (!isConnected && loggedIn) {
-      logout();
-    }
-  }, [isConnected, polybase]);
-
-  const createSwap = () => {
-    // collect the swapName, swapFee
-    // call escroguard
-    // get new contract address
-    // save swap to polybase
-  };
-
-  const joinSwap = () => {};
-
-  const joinedSwaps = () => {};
-
-  /* DASHBOARD */
-  const overview = () => {};
-
-  const pendingSwaps = () => {};
-
-  const cancelTokenSwap = () => {};
-
-  const transactionHistory = () => {};
-
-  /* SWAP */
+const useEscroguard = ({
+  polybase,
+  contract,
+}: {
+  polybase?: PolybaseType;
+  contract?: ContractType;
+}) => {
+  /* BEGIN SWAP */
   // -> swapInfo, cancelTokenSwap
 
-  const calcSwapDetails = () => {};
+  /* COMPLETE SWAP */
 
-  const beginTokenSwap = () => {};
+  const getCounterPartySwapInfo = (id: number) => {};
 
-  const completeTokenSwap = () => {};
+  const completeTokenSwap = (id: number) => {
+    try {
+      // completeTokenSwap(id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   /* FORUM */
   const sendMessage = () => {};
@@ -102,18 +77,7 @@ const useEscroguard = (polybase?: PolybaseType) => {
   const renounceOwnership = () => {};
 
   return {
-    createSwap,
-    joinSwap,
-    joinedSwaps,
-
-    overview,
-    pendingSwaps,
-    transactionHistory,
-    cancelTokenSwap,
-
     // -> swapInfo, cancelTokenSwap
-    calcSwapDetails,
-    beginTokenSwap,
     completeTokenSwap,
 
     sendMessage,

@@ -20,8 +20,8 @@ export interface Space {
   contractAddress: string;
   adminAddress: string;
   members: string[];
-  tokensId: string[];
   chatsId: string[];
+  tokensId: string[];
   updatedAt: number;
   createdAt: number;
 }
@@ -48,54 +48,53 @@ const chatReference = db.collection("Chat");
 const usePolybase = () => {
   const [loggedIn, setLogin] = useState(false);
 
-  const [auth, setAuth] = useState<any>();
+  const [auth, setAuth] = useState<Auth>();
 
   useEffect(() => {
     setAuth(new Auth());
   }, []);
 
-  db.signer(async (data) => {
-    console.log(data);
-    return {
-      h: "eth-personal-sign",
-      sig: await auth.ethPersonalSign(data),
-    };
-  });
+  useEffect(() => {
+    if (!auth) return;
+    db.signer(async (data) => {
+      console.log(data);
+      return {
+        h: "eth-personal-sign",
+        sig: await auth.ethPersonalSign(data),
+      };
+    });
 
-  /* USER */
-
-  useMemo(() => {
-    auth?.onAuthUpdate((authState: { userId: any }) => {
+    auth?.onAuthUpdate((authState) => {
       if (authState) {
         setLogin(true);
-        // setUserId(authState.userId);
       } else {
         setLogin(false);
-        // setUserId(null);
       }
     });
   }, [auth]);
 
+  /* USER */
+
   const login = async () => {
     if (!auth) return;
-    const res = await auth.signIn({ force: true });
+    return auth.signIn({ force: true });
 
-    if (!res?.userId) {
-      auth.signOut();
-    } else {
-      // await userReference.create([
-      //   res?.userId, // id
-      //   "", // name
-      //   res?.email || "", // email
-      //   "", // avatarUrl
-      //   Date.now(), // createdAt
-      // ]);
-      // setUserId(res?.userId);
-    }
+    // if (!res?.userId) {
+    //   auth.signOut();
+    // } else {
+    // await userReference.create([
+    //   res?.userId, // id
+    //   "", // name
+    //   res?.email || "", // email
+    //   "", // avatarUrl
+    //   Date.now(), // createdAt
+    // ]);
+    // setUserId(res?.userId);
+    // }
   };
 
   const logout = async () => {
-    auth.signOut();
+    auth && auth.signOut();
   };
 
   const getUserRecord = async (userId: string) => {
@@ -129,8 +128,13 @@ const usePolybase = () => {
     adminAddress,
     members,
     userId,
-  }: Space & { userId: string }) => {
-    if (!userId) return;
+  }: {
+    name: string;
+    contractAddress: string;
+    adminAddress: string;
+    members: string[];
+    userId: string;
+  }) => {
     const randomId = stringToHexAddress(generateQuickGuid() + "-" + Date.now());
     await spaceReference
       .create([
@@ -144,6 +148,8 @@ const usePolybase = () => {
       .then(() => {
         userReference.record(userId).call("joinSpace", [randomId, Date.now()]);
       });
+
+    return randomId;
   };
 
   const getSpaceRecord = async (spaceId: string) => {

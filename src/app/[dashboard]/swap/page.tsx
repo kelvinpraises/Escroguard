@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import SwapCollapse from "@/components/SwapCollapse";
 import Link from "next/link";
-import React from "react";
 
 const Swap = () => {
   return (

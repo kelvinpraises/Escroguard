@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import createStudioSlice from "./createStudioSlice";
+import createSpaceSlice from "./createSpaceSlice";
 import createUserSlice from "./createUserSlice";
 
 type StateFromFunctions<T extends [...any]> = T extends [infer F, ...infer R]
@@ -10,13 +10,13 @@ type StateFromFunctions<T extends [...any]> = T extends [infer F, ...infer R]
   : unknown;
 
 type State = StateFromFunctions<
-  [typeof createStudioSlice, typeof createUserSlice]
+  [typeof createSpaceSlice, typeof createUserSlice]
 >;
 
 export const store = create<State>()(
   devtools(
     (set, get, store) => ({
-      ...createStudioSlice(set, get, store),
+      ...createSpaceSlice(set, get, store),
       ...createUserSlice(set, get, store),
     }),
     { name: "quiverbliss" }

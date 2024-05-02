@@ -1,12 +1,12 @@
-import { horizen } from "@/data/constants";
 import { getDefaultWallets } from "@rainbow-me/rainbowkit";
 import React from "react";
+import { moonbaseAlpha } from "wagmi/chains";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import RainbowKitProvider from "../rainbowkit";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [horizen],
+  [moonbaseAlpha],
   [publicProvider()]
 );
 

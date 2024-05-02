@@ -1,53 +1,67 @@
-import { BigNumber } from "ethers";
-import { Interface } from "ethers/lib/utils.js";
-
-export interface Log {
-  blockNumber: number;
-  blockHash: string;
-  transactionIndex: number;
-
-  removed: boolean;
-
-  address: string;
-  data: string;
-
-  topics: Array<string>;
-
-  transactionHash: string;
-  logIndex: number;
-}
-
-export interface TransactionReceipt {
-  to: string;
-  from: string;
-  contractAddress: string;
-  transactionIndex: number;
-  root?: string;
-  gasUsed: BigNumber;
-  logsBloom: string;
-  blockHash: string;
-  transactionHash: string;
-  logs: Array<Log>;
-  blockNumber: number;
-  confirmations: number;
-  cumulativeGasUsed: BigNumber;
-  effectiveGasPrice: BigNumber;
-  byzantium: boolean;
-  type: number;
-  status?: number;
-}
+import { Address } from "wagmi";
 
 export type StateDispatch<T> = React.Dispatch<React.SetStateAction<T>>;
 
-export interface DeployProps {
-  abi: Interface;
-  args: { name: string; symbol: string };
-  setContractAddress: StateDispatch<string | null>;
-  setStage: StateDispatch<number>;
-  setArgs: StateDispatch<{
-    name: string;
-    symbol: string;
-  }>;
+export type HomeAction = "create" | "join" | "joined";
+export type InstanceState = "begun" | "finished" | "cancelled";
+
+export interface Instance {
+  id: number;
+  initiator: Address;
+  initiatorERC20: Address;
+  initiatorAmount: number;
+  counterParty: Address;
+  counterPartyERC20: Address;
+  counterPartyAmount: number;
+  state: InstanceState;
 }
 
-export type HomeAction = "create" | "join" | "joined";
+export interface HomeActionState {
+  swapName: string;
+  swapFees: string;
+  swapId: string;
+  joined: {
+    id: string;
+    name: string;
+    contractAddress: string;
+  }[];
+}
+
+export interface DashboardState {
+  pendingSwaps: Instance[];
+  swapHistory: Instance[];
+}
+
+export type HomeActionStateDispatch = React.Dispatch<Partial<HomeActionState>>;
+
+export interface SwapInfo {
+  rates: string[];
+  swapFee: string;
+  initiator: SwapDetails;
+  counterParty: SwapDetails;
+}
+export interface SwapDetails {
+  userAddress: Address | null;
+  tokenDetails: {
+    address: Address | null;
+    symbol: string | null;
+    amount: number | null;
+    noFeeOnTokenSwap: boolean | null;
+  };
+}
+
+export interface SignatureMessage {
+  from: Address;
+  to: Address;
+  value: bigint;
+  data: Address;
+  gaslimit: bigint;
+  nonce: bigint;
+  deadline: bigint;
+}
+
+export interface CallPermit extends SignatureMessage {
+  v: number;
+  r: Address;
+  s: Address;
+}
