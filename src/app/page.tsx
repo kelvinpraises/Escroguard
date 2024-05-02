@@ -1,10 +1,16 @@
 "use client";
+import { ConnectButton } from "@/components/ConnectButton";
 import HomeActions from "@/components/HomeActions";
+import useAuth from "@/hooks/home/auth";
+import usePolybase from "@/hooks/polybase";
 import { HomeAction } from "@/type";
 import { useState } from "react";
 
 export default function Home() {
   const [action, setAction] = useState<HomeAction | null>(null);
+  const polybase = usePolybase();
+  const loggedIn = useAuth(polybase);
+
   return (
     <div className=" flex w-full items-start h-screen">
       <div className=" flex flex-col bg-white gap-[128px] p-8 h-full w-full">
@@ -22,13 +28,16 @@ export default function Home() {
             </p>
           </div>
           <div className=" w-full flex flex-col items-center gap-4">
-            {/* button component  */}
-            {/* <button className=" bg-black text-white py-4 px-8 rounded-[5px]">
-              Connect Wallet
-            </button> */}
+            <ConnectButton
+              style={{
+                display: !loggedIn ? "flex" : "none",
+              }}
+            />
 
-            {/* links */}
             <div
+              style={{
+                display: loggedIn ? "flex" : "none",
+              }}
               onClick={() => setAction("create")}
               className=" min-w-[530px] flex p-4 gap-4 items-center rounded-[5px] border-[2px] border-[#E0E0E0] cursor-pointer"
             >
@@ -43,6 +52,9 @@ export default function Home() {
               </div>
             </div>
             <div
+              style={{
+                display: loggedIn ? "flex" : "none",
+              }}
               onClick={() => setAction("join")}
               className=" min-w-[530px] flex p-4 gap-4 items-center rounded-[5px] border-[2px] border-[#E0E0E0] cursor-pointer"
             >
@@ -57,6 +69,9 @@ export default function Home() {
               </div>
             </div>
             <div
+              style={{
+                display: loggedIn ? "flex" : "none",
+              }}
               onClick={() => setAction("joined")}
               className=" min-w-[530px] flex p-4 gap-4 items-center rounded-[5px] border-[2px] border-[#E0E0E0] cursor-pointer"
             >

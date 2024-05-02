@@ -119,7 +119,7 @@ const Settings = () => {
                     placeholder="Token address"
                   />
                   <button className=" whitespace-nowrap px-6 bg-[#1F2329] rounded-[5px] flex items-center">
-                    Ticker e.g ETH
+                    Symbol e.g ETH
                   </button>
                 </div>
               </div>

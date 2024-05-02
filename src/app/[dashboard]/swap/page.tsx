@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import SwapSelect from "@/components/SwapSelect";
 import Link from "next/link";
-import React from "react";
 
 const Swap = () => {
   return (

@@ -55,168 +55,44 @@
   collection Space {
     id: string;
     name: string;
-    emoji: string;
-    description: string;
     contractAddress: string;
     adminAddress: string;
-    pushChannelAddress: string;
-    participants: string[];
-    meetingsId: string[];
-    recordingsId: string[];
-    assetsId: string[];
-    guidesId: string[];
-    eventsId: string[];
-    updatedAt: number;
-    createdAt: number;
-
-    constructor (id: string, name: string, emoji: string, description: string, adminAddress: string, pushChannelAddress: string, participants: string[], createdAt: number) {
-      this.id = id;
-      this.name = name;
-      this.emoji = emoji;
-      this.description = description;
-      this.contractAddress = "0x0000000000000000000000000000000000000000";
-      this.adminAddress = adminAddress;
-      this.pushChannelAddress = pushChannelAddress;
-      this.participants = participants;
-      this.meetingsId = [];
-      this.recordingsId = [];
-      this.assetsId = [];
-      this.guidesId = [];
-      this.eventsId = [];
-      this.updatedAt = createdAt;
-      this.createdAt = createdAt;
-    }
-
-    updateSpaceInfo (name: string, emoji: string, description: string, participants: string[], updatedAt: number) {
-      this.name = name;
-      this.emoji = emoji;
-      this.description = description;
-      this.participants = participants;
-      this.updatedAt = updatedAt;
-    }
-
-    updateContractAddress (contractAddress: string, updatedAt: number) {
-      this.contractAddress = contractAddress;
-      this.updatedAt = updatedAt;
-    }
-
-    updatePushChannelAddress (pushChannelAddress: string, updatedAt: number) {
-      this.pushChannelAddress = pushChannelAddress;
-      this.updatedAt = updatedAt;
-    }
-
-    addMeetingId (id: string, updatedAt: number) {
-      this.meetingsId.push(id);
-      this.updatedAt = updatedAt;
-    }
-
-    addRecordingId (id: string, updatedAt: number) {
-      this.recordingsId.push(id);
-      this.updatedAt = updatedAt;
-    }
-
-    addAssetId (id: string, updatedAt: number) {
-      this.assetsId.push(id);
-      this.updatedAt = updatedAt;
-    }
-
-    addGuideId (id: string, updatedAt: number) {
-      this.guidesId.push(id);
-      this.updatedAt = updatedAt;
-    }
-
-    addEventId (id: string, updatedAt: number) {
-      this.eventsId.push(id);
-      this.updatedAt = updatedAt;
-    }
-  }
-
-  @public
-  collection Meeting {
-    id: string;
-    roomId: string;
-    name: string;
-    emoji: string;
-    spaceId: string;
-    recorded: boolean;
-    consensus: boolean;
-    participants: string[];
+    members: string[];
     chatsId: string[];
+    tokensId: string[];
     updatedAt: number;
     createdAt: number;
 
-    constructor(id: string, roomId: string, name: string, emoji: string, spaceId: string, recorded: boolean, consensus: boolean, participants: string[], createdAt: number) {
+    constructor (id: string, name: string, contractAddress: string, adminAddress: string, members: string[], createdAt: number) {
       this.id = id;
-      this.roomId = roomId;
       this.name = name;
-      this.emoji = emoji;
-      this.spaceId = spaceId;
-      this.recorded = recorded;
-      this.consensus = consensus;
-      this.participants = participants;
+      this.contractAddress = contractAddress;
+      this.adminAddress = adminAddress;
+      this.members = members;
       this.chatsId = [];
+      this.tokensId = [];
       this.updatedAt = createdAt;
       this.createdAt = createdAt;
     }
 
-    updateMeeting(name: string, emoji: string, updatedAt: number) {
+    renameSpace (name: string, updatedAt: number) {
       this.name = name;
-      this.emoji = emoji;
       this.updatedAt = updatedAt;
     }
 
-    setChatId(id: string, updatedAt: number) {
+    addChatId(id: string, updatedAt: number) {
       this.chatsId.push(id);
       this.updatedAt = updatedAt;
     }
 
-    setParticipant(participant: string, updatedAt: number) {
-      this.participants = [...new Set([...this.participants, participant])];
+    addTokenId(id: string, updatedAt: number) {
+      this.tokensId.push(id);
       this.updatedAt = updatedAt;
     }
-  }
 
-  @public
-  collection Recording {
-    id: string;
-    name: string;
-    type: string;
-    url: string;
-    spaceId: string;
-    meetingId: string;
-    updatedAt: number;
-    createdAt: number;
-
-    constructor(id: string, name: string, type: string, url: string, spaceId: string, meetingId: string, createdAt: number) {
-      this.id = id;
-      this.name = name;
-      this.type = type;
-      this.url = url;
-      this.spaceId = spaceId;
-      this.meetingId = meetingId;
-      this.updatedAt = createdAt;
-      this.createdAt = createdAt;
-    }
-  }
-
-  @public
-  collection Asset {
-    id: string;
-    name: string;
-    type: string;
-    url: string;
-    spaceId: string;
-    updatedAt: number;
-    createdAt: number;
-
-    constructor(id: string, name: string, type: string, url: string, spaceId: string, createdAt: number) {
-      this.id = id;
-      this.name = name;
-      this.type = type;
-      this.url = url;
-      this.spaceId = spaceId;
-      this.updatedAt = createdAt;
-      this.createdAt = createdAt;
+    addMember(member: string, updatedAt: number) {
+      this.members = [...new Set([...this.members, member])];
+      this.updatedAt = updatedAt;
     }
   }
 
@@ -226,6 +102,7 @@
     message: string;
     userId: string;
     spaceId: string;
+    publicKey: PublicKey;
     createdAt: number;
     updatedAt: number;
 
@@ -234,64 +111,34 @@
       this.message = message;
       this.userId = userId;
       this.spaceId = spaceId;
+      this.publicKey = ctx.publicKey;
       this.createdAt = createdAt;
       this.updatedAt = createdAt;
     }
-  }
 
-  @public
-  collection Guide {
-    id: string;
-    name: string;
-    content: string;
-    spaceId: string;
-    updatedAt: number;
-    createdAt: number;
-
-    constructor(id: string, name: string, content: string, spaceId: string, createdAt: number) {
-      this.id = id;
-      this.name = name;
-      this.content = content;
-      this.spaceId = spaceId;
-      this.updatedAt = createdAt;
-      this.createdAt = createdAt;
-    }
-
-    updateGuideInfo(name: string, content: string, updatedAt: number) {
-      this.name = name;
-      this.content = content;
+    editChat(message: string, updatedAt: number) {
+      if (ctx.publicKey !== this.publicKey) {
+        error('You are not the owner of this record.');
+      }
+      this.message = message;
       this.updatedAt = updatedAt;
     }
   }
 
   @public
-  collection Event {
+  collection Token {
     id: string;
-    date: string;
-    time: string;
-    topic: string;
-    description: string;
+    symbol: string;
+    contractAddress: string;
     spaceId: string;
-    updatedAt: number;
     createdAt: number;
 
-    constructor(id: string, date: string, time: string, topic: string, description: string, spaceId: string, createdAt: number) {
+    constructor(id: string, symbol: string, contractAddress: string, spaceId: string, createdAt: number) {
       this.id = id;
-      this.date = date;
-      this.time = time;
-      this.topic = topic;
-      this.description = description;
+      this.symbol = symbol;
+      this.contractAddress = contractAddress;
       this.spaceId = spaceId;
-      this.updatedAt = createdAt;
       this.createdAt = createdAt;
-    }
-
-    updateEventInfo(date: string, time: string, topic: string, description: string, updatedAt: number) {
-      this.date = date;
-      this.time = time;
-      this.topic = topic;
-      this.description = description;
-      this.updatedAt = updatedAt;
     }
   }
 ```
