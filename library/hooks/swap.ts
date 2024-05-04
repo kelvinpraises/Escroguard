@@ -1,21 +1,25 @@
 "use client";
-import { swapAbi } from "../../data/constants";
-import { store } from "../../store/store";
-import { SwapInfo } from "../../type";
 import { useReducer } from "react";
 import { useDebounce } from "usehooks-ts";
 import { parseEther } from "viem";
 import {
+  Address,
+  useContractRead,
   useContractReads,
   useContractWrite,
   usePrepareContractWrite,
 } from "wagmi";
+import { swapAbi } from "../data/constants";
+import { store } from "../store/store";
+import { SwapAction, SwapInfo } from "../type";
 
-const useBeginSwap = () => {
+const useSwap = ({ id, action }: { id?: number; action: SwapAction }) => {
   const contractAddress = store((state) => state.contractAddress);
   const userAddress = store((state) => state.userAddress);
 
   if (!contractAddress || !userAddress) throw new Error("Instance error");
+  if (action === "complete" && id === undefined)
+    throw new Error("Id is undefined");
 
   const [swapInfo, updateSwapInfo] = useReducer(
     (current: SwapInfo, update: Partial<SwapInfo>): SwapInfo => ({
@@ -31,7 +35,6 @@ const useBeginSwap = () => {
           address: null,
           symbol: null,
           amount: null,
-          noFeeOnTokenSwap: null,
         },
       },
       counterParty: {
@@ -40,7 +43,6 @@ const useBeginSwap = () => {
           address: null,
           symbol: null,
           amount: null,
-          noFeeOnTokenSwap: null,
         },
       },
     }
@@ -77,6 +79,7 @@ const useBeginSwap = () => {
       } as const,
     ],
     enabled: satisfies([
+      action === "begin",
       swapInfo.initiator.tokenDetails.address,
       swapInfo.initiator.tokenDetails.amount,
       swapInfo.counterParty.tokenDetails.address,
@@ -85,8 +88,14 @@ const useBeginSwap = () => {
     onSuccess(data) {
       const ownerFeePercent = Number(data[0]?.result) / 10; // from ‰ to %
 
-      const initiatorTokenDetails = swapInfo.initiator.tokenDetails;
-      const cpTokenDetails = swapInfo.counterParty.tokenDetails;
+      let initiatorTokenDetails = {
+        ...swapInfo.initiator.tokenDetails,
+        noFeeOnTokenSwap: false,
+      };
+      let cpTokenDetails = {
+        ...swapInfo.counterParty.tokenDetails,
+        noFeeOnTokenSwap: false,
+      };
 
       initiatorTokenDetails.noFeeOnTokenSwap = data[1]?.result!;
       cpTokenDetails.noFeeOnTokenSwap = data[2]?.result!;
@@ -97,9 +106,9 @@ const useBeginSwap = () => {
       const ratio2 = cpTokenDetails.amount! / initiatorTokenDetails.amount!;
       const rate2 = `${ratio2} ${cpTokenDetails.symbol} = 1 ${initiatorTokenDetails.symbol}`;
 
-      const details = [swapInfo.initiator, swapInfo.counterParty]
-        .filter(({ tokenDetails }) => tokenDetails.noFeeOnTokenSwap === false)
-        .map(({ tokenDetails }) => {
+      const details = [initiatorTokenDetails, cpTokenDetails]
+        .filter((tokenDetails) => tokenDetails.noFeeOnTokenSwap === false)
+        .map((tokenDetails) => {
           const deductible = parseFloat(
             (tokenDetails.amount! * (ownerFeePercent / 100)).toFixed(4)
           );
@@ -117,7 +126,7 @@ const useBeginSwap = () => {
     },
   });
 
-  const { config } = usePrepareContractWrite({
+  const { config: beginConfig } = usePrepareContractWrite({
     ...swapContract,
     functionName: "begin",
     value: parseEther("0"),
@@ -129,6 +138,7 @@ const useBeginSwap = () => {
       swapInfo.counterParty.userAddress!,
     ],
     enabled: satisfies([
+      action === "begin",
       userAddress,
       debouncedInitiatorAmount,
       swapInfo.counterParty.tokenDetails.address,
@@ -137,16 +147,58 @@ const useBeginSwap = () => {
     ]),
   });
 
-  const begin = useContractWrite(config);
+  const begin = useContractWrite(beginConfig);
+
+  useContractRead({
+    ...swapContract,
+    functionName: "counterPartyInstances",
+    args: [userAddress, BigInt(id!)],
+    enabled: action === "complete",
+    onSuccess(data) {
+      updateSwapInfo({
+        initiator: {
+          userAddress: data[1],
+          tokenDetails: {
+            address: data[2],
+            symbol: getSymbol(data[2]),
+            amount: Number(data[3]),
+          },
+        },
+
+        counterParty: {
+          userAddress: data[4],
+          tokenDetails: {
+            address: data[5],
+            symbol: getSymbol(data[5]),
+            amount: Number(data[6]),
+          },
+        },
+      });
+    },
+  });
+
+  const { config } = usePrepareContractWrite({
+    ...swapContract,
+    functionName: "complete",
+    args: [BigInt(id!)],
+    enabled: action === "complete",
+  });
+
+  const complete = useContractWrite(config);
 
   return {
     swapInfo,
     updateSwapInfo,
     begin,
+    complete,
   };
 };
 
-export default useBeginSwap;
+export default useSwap;
+
+function getSymbol(arg0: Address): string {
+  throw new Error("Function not implemented.");
+}
 
 function satisfies(array: any[]) {
   return array.every(Boolean);

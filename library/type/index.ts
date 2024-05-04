@@ -2,6 +2,7 @@ import { Address } from "wagmi";
 
 export type StateDispatch<T> = React.Dispatch<React.SetStateAction<T>>;
 
+export type SwapAction = "begin" | "complete" | "cancel";
 export type HomeAction = "create" | "join" | "joined";
 export type InstanceState = "begun" | "finished" | "cancelled";
 
@@ -46,7 +47,6 @@ export interface SwapDetails {
     address: Address | null;
     symbol: string | null;
     amount: number | null;
-    noFeeOnTokenSwap: boolean | null;
   };
 }
 

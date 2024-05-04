@@ -1,4 +1,3 @@
-import { ContractType } from "./swap/cancel";
 import { PolybaseType } from "./polybase";
 
 export type OrionType = ReturnType<typeof useEscroguard>;
