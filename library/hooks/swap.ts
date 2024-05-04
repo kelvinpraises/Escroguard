@@ -17,9 +17,12 @@ const useSwap = ({ id, action }: { id?: number; action: SwapAction }) => {
   const contractAddress = store((state) => state.contractAddress);
   const userAddress = store((state) => state.userAddress);
 
-  if (!contractAddress || !userAddress) throw new Error("Instance error");
-  if (action === "complete" && id === undefined)
+  if (!contractAddress || !userAddress) {
+    throw new Error("Instance error");
+  }
+  if ((action === "complete" || action === "cancel") && id === undefined) {
     throw new Error("Id is undefined");
+  }
 
   const [swapInfo, updateSwapInfo] = useReducer(
     (current: SwapInfo, update: Partial<SwapInfo>): SwapInfo => ({
@@ -177,20 +180,31 @@ const useSwap = ({ id, action }: { id?: number; action: SwapAction }) => {
     },
   });
 
-  const { config } = usePrepareContractWrite({
+  const { config: completeConfig } = usePrepareContractWrite({
     ...swapContract,
     functionName: "complete",
     args: [BigInt(id!)],
     enabled: action === "complete",
   });
 
-  const complete = useContractWrite(config);
+  const complete = useContractWrite(completeConfig);
+
+  const { config: cancelConfig } = usePrepareContractWrite({
+    abi: swapAbi,
+    address: contractAddress,
+    functionName: "cancel",
+    args: [BigInt(id!)],
+    enabled: action === "cancel",
+  });
+
+  const cancel = useContractWrite(cancelConfig);
 
   return {
     swapInfo,
     updateSwapInfo,
     begin,
     complete,
+    cancel,
   };
 };
 
