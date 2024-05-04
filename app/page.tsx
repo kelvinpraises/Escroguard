@@ -1,7 +1,7 @@
 "use client";
 import { ConnectButton } from "../library/components/ConnectButton";
 import HomeActions from "../library/components/HomeActions";
-import useAuth from "../library/hooks/home/auth";
+import useAuth from "../library/hooks/auth";
 import usePolybase from "../library/hooks/polybase";
 import { HomeAction } from "../library/type";
 import { useState } from "react";

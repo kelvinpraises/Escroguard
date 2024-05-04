@@ -1,5 +1,5 @@
 "use client";
-import useHomeActions from "../hooks/home/homeActions";
+import useHomeActions from "../hooks/homeActions";
 import usePolybase from "../hooks/polybase";
 import { HomeAction } from "../type";
 

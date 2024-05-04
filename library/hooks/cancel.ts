@@ -1,5 +1,5 @@
-import { swapAbi } from "../../data/constants";
-import { store } from "../../store/store";
+import { swapAbi } from "../data/constants";
+import { store } from "../store/store";
 import { useContractWrite } from "wagmi";
 
 const useCancelSwap = () => {

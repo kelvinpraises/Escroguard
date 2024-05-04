@@ -1,5 +1,5 @@
-import { store } from "../../store/store";
-import { SignatureMessage } from "../../type";
+import { store } from "../store/store";
+import { SignatureMessage } from "../type";
 import { useState } from "react";
 import { Address, hexToNumber } from "viem";
 import { serialize, useSignTypedData } from "wagmi";

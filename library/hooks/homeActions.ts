@@ -1,12 +1,12 @@
-import { factoryAbi } from "../../data/constants";
-import { store } from "../../store/store";
-import { HomeActionState } from "../../type";
+import { factoryAbi } from "../data/constants";
+import { store } from "../store/store";
+import { HomeActionState } from "../type";
 import { useRouter } from "next/navigation";
 import { useEffect, useReducer, useState } from "react";
 import { Address, encodeFunctionData } from "viem";
 import { useContractRead } from "wagmi";
-import { PolybaseType } from "../polybase";
-import useTypedSignerDispatch from "../signer/typedSignerDispatch";
+import { PolybaseType } from "./polybase";
+import useTypedSignerDispatch from "./typedSignerDispatch";
 
 const useHomeActions = (polybase: PolybaseType) => {
   const userId = store((state) => state.userId);

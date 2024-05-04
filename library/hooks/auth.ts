@@ -1,7 +1,7 @@
-import { store } from "../../store/store";
+import { store } from "../store/store";
 import { useEffect } from "react";
 import { Address, useAccount } from "wagmi";
-import { PolybaseType } from "../polybase";
+import { PolybaseType } from "./polybase";
 
 const useAuth = (polybase: PolybaseType) => {
   const setUserId = store((state) => state.setUserId);
