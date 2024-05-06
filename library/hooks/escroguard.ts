@@ -1,14 +1,4 @@
-import { PolybaseType } from "./polybase";
-
-export type OrionType = ReturnType<typeof useEscroguard>;
-
-const useEscroguard = ({
-  polybase,
-  contract,
-}: {
-  polybase?: PolybaseType;
-  contract?: ContractType;
-}) => {
+const useEscroguard = () => {
   /* BEGIN SWAP */
   // -> swapInfo, cancelTokenSwap
 

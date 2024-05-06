@@ -5,10 +5,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useReducer, useState } from "react";
 import { Address, encodeFunctionData } from "viem";
 import { useContractRead } from "wagmi";
-import { PolybaseType } from "./polybase";
 import useTypedSignerDispatch from "./typedSignerDispatch";
 
-const useHomeActions = (polybase: PolybaseType) => {
+const useHomeActions = () => {
   const userId = store((state) => state.userId);
   const userAddress = store((state) => state.userAddress);
 
@@ -49,7 +48,7 @@ const useHomeActions = (polybase: PolybaseType) => {
     args: [userAddress!],
     enabled: isSuccess,
     onSuccess(contractAddresses) {
-      const { createSpace } = polybase;
+      // const { createSpace };
       const contractAddress = contractAddresses[contractAddresses.length - 1];
 
       (async () => {
@@ -76,7 +75,7 @@ const useHomeActions = (polybase: PolybaseType) => {
   });
 
   const joinSwap = (id: string) => {
-    const { addSpaceToUser } = polybase;
+    // const { addSpaceToUser };
 
     try {
       addSpaceToUser(userId!, id);
@@ -89,7 +88,7 @@ const useHomeActions = (polybase: PolybaseType) => {
 
   useEffect(() => {
     (async () => {
-      const { getUserRecord, getSpaceRecord } = polybase;
+      // const { getUserRecord, getSpaceRecord };
 
       try {
         const { spacesId } = await getUserRecord(userId!);
