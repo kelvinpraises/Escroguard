@@ -1,21 +1,39 @@
 import { Chain } from "wagmi";
 
-export const horizen = {
-  id: 1663,
-  name: "Horizen",
-  network: "horizen",
+export const canto = {
+  id: 7700,
+  name: "CANTO",
+  network: "CANTO",
   nativeCurrency: {
     decimals: 18,
-    name: "testnet horizen",
-    symbol: "tZEN",
+    name: "CANTO",
+    symbol: "CANTO",
   },
   rpcUrls: {
-    default: { http: ["https://gobi-testnet.horizenlabs.io/ethv1"] },
-    public: { http: ["https://gobi-testnet.horizenlabs.io/ethv1"] },
+    default: { http: ["https://canto.slingshot.finance"] },
+    public: { http: ["https://canto.slingshot.finance"] },
   },
   blockExplorers: {
-    default: { name: "Gobi", url: "https://gobi-explorer.horizen.io" },
-    gobi: { name: "Gobi", url: "https://gobi-explorer.horizen.io" },
+    default: { name: "Oklink", url: "https://www.oklink.com/canto" },
+  },
+  testnet: false,
+} as const satisfies Chain;
+
+export const cantoTestnet = {
+  id: 7701,
+  name: "Canto Testnet",
+  network: "Canto Testnet",
+  nativeCurrency: {
+    decimals: 18,
+    name: "CANTO",
+    symbol: "CANTO",
+  },
+  rpcUrls: {
+    default: { http: ["https://canto-testnet.plexnode.wtf"] },
+    public: { http: ["https://canto-testnet.plexnode.wtf"] },
+  },
+  blockExplorers: {
+    default: { name: "Tuber", url: "https://testnet.tuber.build/" },
   },
   testnet: true,
 } as const satisfies Chain;
