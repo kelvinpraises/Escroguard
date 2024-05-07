@@ -1,6 +1,16 @@
 import axios from "axios";
+import { SIWESession } from "connectkit";
 
-const BASE_URL = "http://localhost:3000"; // Replace with your backend URL
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SERVER_URL;
+
+if (!BASE_URL) {
+  throw new Error("Backend address environment variable is not defined.");
+}
+
+const axiosInstance = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true, // Enable sending credentials
+});
 
 /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
 /*                          Types                           */
@@ -32,7 +42,7 @@ export interface SpaceToken {
 
 export const getNonce = async (): Promise<string> => {
   try {
-    const response = await axios.get(`${BASE_URL}/nonce`);
+    const response = await axiosInstance.get(`/nonce`);
     return response.data;
   } catch (error) {
     console.error("Error getting nonce:", error);
@@ -40,12 +50,15 @@ export const getNonce = async (): Promise<string> => {
   }
 };
 
-export const verifySignature = async (
-  message: string,
-  signature: string
-): Promise<User> => {
+export const verifyMessage = async ({
+  message,
+  signature,
+}: {
+  message: string;
+  signature: string;
+}): Promise<boolean> => {
   try {
-    const response = await axios.post(`${BASE_URL}/verify`, {
+    const response = await axiosInstance.post(`/verify`, {
       message,
       signature,
     });
@@ -56,21 +69,22 @@ export const verifySignature = async (
   }
 };
 
-export const logout = async (): Promise<void> => {
+export const getSession = async (): Promise<SIWESession | null> => {
   try {
-    await axios.get(`${BASE_URL}/logout`);
-  } catch (error) {
-    console.error("Error logging out:", error);
-    throw error;
-  }
-};
-
-export const verifyAuthentication = async (): Promise<User> => {
-  try {
-    const response = await axios.get(`${BASE_URL}/verifyAuthentication`);
+    const response = await axiosInstance.get(`/session`);
     return response.data;
   } catch (error) {
     console.error("Error verifying authentication:", error);
+    return null;
+  }
+};
+
+export const signOut = async (): Promise<boolean> => {
+  try {
+    const response = await axiosInstance.get(`/logout`);
+    return response.data;
+  } catch (error) {
+    console.error("Error logging out:", error);
     throw error;
   }
 };
@@ -83,7 +97,7 @@ export const createUser = async (
   user: Omit<User, "id">
 ): Promise<{ userId: string }> => {
   try {
-    const response = await axios.post(`${BASE_URL}/users`, user);
+    const response = await axiosInstance.post(`/users`, user);
     return response.data;
   } catch (error) {
     console.error("Error creating user:", error);
@@ -93,7 +107,7 @@ export const createUser = async (
 
 export const getUser = async (userId: string): Promise<User> => {
   try {
-    const response = await axios.get(`${BASE_URL}/users/${userId}`);
+    const response = await axiosInstance.get(`/users/${userId}`);
     return response.data;
   } catch (error) {
     console.error("Error getting user:", error);
@@ -106,7 +120,7 @@ export const updateUser = async (
   user: Partial<User>
 ): Promise<void> => {
   try {
-    await axios.put(`${BASE_URL}/users/${userId}`, user);
+    await axiosInstance.put(`/users/${userId}`, user);
   } catch (error) {
     console.error("Error updating user:", error);
     throw error;
@@ -114,14 +128,14 @@ export const updateUser = async (
 };
 
 /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
-/*                      Space Section                      */
+/*                      Space Section                       */
 /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
 
 export const createSpace = async (
   space: Omit<Space, "id" | "createdAt" | "updatedAt">
 ): Promise<{ spaceId: string }> => {
   try {
-    const response = await axios.post(`${BASE_URL}/spaces`, space);
+    const response = await axiosInstance.post(`/spaces`, space);
     return response.data;
   } catch (error) {
     console.error("Error creating space:", error);
@@ -131,7 +145,7 @@ export const createSpace = async (
 
 export const getSpace = async (spaceId: string): Promise<Space> => {
   try {
-    const response = await axios.get(`${BASE_URL}/spaces/${spaceId}`);
+    const response = await axiosInstance.get(`/spaces/${spaceId}`);
     return response.data;
   } catch (error) {
     console.error("Error getting space:", error);
@@ -144,7 +158,7 @@ export const updateSpace = async (
   space: Partial<Space>
 ): Promise<void> => {
   try {
-    await axios.put(`${BASE_URL}/spaces/${spaceId}`, space);
+    await axiosInstance.put(`/spaces/${spaceId}`, space);
   } catch (error) {
     console.error("Error updating space:", error);
     throw error;
@@ -160,7 +174,7 @@ export const addUserToSpace = async (
   spaceId: string
 ): Promise<void> => {
   try {
-    await axios.post(`${BASE_URL}/user-spaces`, { userId, spaceId });
+    await axiosInstance.post(`/user-spaces`, { userId, spaceId });
   } catch (error) {
     console.error("Error adding user to space:", error);
     throw error;
@@ -169,7 +183,7 @@ export const addUserToSpace = async (
 
 export const getUserSpaces = async (userId: string): Promise<Space[]> => {
   try {
-    const response = await axios.get(`${BASE_URL}/user-spaces/${userId}`);
+    const response = await axiosInstance.get(`/user-spaces/${userId}`);
     return response.data;
   } catch (error) {
     console.error("Error getting user spaces:", error);
@@ -182,7 +196,7 @@ export const removeUserFromSpace = async (
   spaceId: string
 ): Promise<void> => {
   try {
-    await axios.delete(`${BASE_URL}/user-spaces/${userId}/${spaceId}`);
+    await axiosInstance.delete(`/user-spaces/${userId}/${spaceId}`);
   } catch (error) {
     console.error("Error removing user from space:", error);
     throw error;
@@ -198,7 +212,7 @@ export const addTokenToSpace = async (
   tokenId: string
 ): Promise<void> => {
   try {
-    await axios.post(`${BASE_URL}/space-tokens`, { spaceId, tokenId });
+    await axiosInstance.post(`/space-tokens`, { spaceId, tokenId });
   } catch (error) {
     console.error("Error adding token to space:", error);
     throw error;
@@ -209,7 +223,7 @@ export const getSpaceTokens = async (
   spaceId: string
 ): Promise<SpaceToken[]> => {
   try {
-    const response = await axios.get(`${BASE_URL}/space-tokens/${spaceId}`);
+    const response = await axiosInstance.get(`/space-tokens/${spaceId}`);
     return response.data;
   } catch (error) {
     console.error("Error getting space tokens:", error);
@@ -222,7 +236,7 @@ export const removeTokenFromSpace = async (
   tokenId: string
 ): Promise<void> => {
   try {
-    await axios.delete(`${BASE_URL}/space-tokens/${spaceId}/${tokenId}`);
+    await axiosInstance.delete(`/space-tokens/${spaceId}/${tokenId}`);
   } catch (error) {
     console.error("Error removing token from space:", error);
     throw error;

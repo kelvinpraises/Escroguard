@@ -48,23 +48,7 @@ app.post("/verify", async function (req, res) {
     req.session.siwe = message;
     req.session.cookie.expires = new Date(message.expirationTime!);
     req.session.save(() => {
-      const query = "SELECT * FROM Users WHERE id = ?";
-      const params = [req.session.siwe?.address];
-
-      db.all(query, params, (err, rows) => {
-        if (err) {
-          res.status(500).json({ error: err.message });
-          return;
-        }
-
-        res.json(
-          rows[0] || {
-            name: "",
-            id: req.session.siwe?.address,
-            avatarUrl: "",
-          }
-        );
-      });
+      res.send(true);
     });
   } catch (e) {
     req.session.siwe = undefined;
@@ -96,40 +80,29 @@ app.post("/verify", async function (req, res) {
   }
 });
 
-app.get("/logout", (req, res) => {
-  req.session.destroy((e) => {
-    const error = e as unknown as Error;
-    console.log(error);
-  });
-  res.setHeader("Content-Type", "text/plain");
-  res.send(`You have been logged out`);
-});
-
-app.get("/verifyAuthentication", function (req, res) {
+app.get("/session", function (req, res) {
   if (!req.session.siwe) {
-    res.json({
-      authenticated: false,
-    });
+    res.status(401).json({ message: "You have to sign in first" });
     return;
   }
-  const query = "SELECT * FROM Users WHERE id = ?";
-  const params = [req.session.siwe?.address];
 
-  db.all(query, params, (err, rows) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-
-    res.json(
-      { ...(rows[0] as Object), authenticated: true } || {
-        name: "",
-        id: req.session.siwe?.address,
-        avatarUrl: "",
-        authenticated: true,
-      }
-    );
+  res.json({
+    address: req.session.siwe?.address,
+    chainId: req.session.siwe?.chainId,
   });
+});
+
+app.get("/logout", (req, res) => {
+  try {
+    req.session.destroy((e) => {
+      const error = e as unknown as Error;
+      console.log(error);
+    });
+    // res.setHeader("Content-Type", "text/plain");
+    res.send(true);
+  } catch (error) {
+    res.send(false);
+  }
 });
 
 /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
