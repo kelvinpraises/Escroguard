@@ -3,7 +3,11 @@ import { SIWEConfig, SIWEProvider as _SIWEProvider } from "connectkit";
 import React from "react";
 import { SiweMessage } from "siwe";
 
-const BACKEND_ADDR = "http://localhost:3001";
+const BACKEND_ADDR = process.env.NEXT_PUBLIC_BACKEND_SERVER_URL;
+
+if (!BACKEND_ADDR) {
+  throw new Error("Backend address environment variable is not defined.");
+}
 
 const siweConfig: SIWEConfig = {
   getNonce: async () => {
