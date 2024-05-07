@@ -1,6 +1,6 @@
 "use client";
-import { store } from "../store/store";
-import Navbar from "./Navbar";
+import { store } from "../../store/store";
+import Navbar from "../Navbar";
 
 const Header = () => {
   const address = store((state) => state.userAddress);
