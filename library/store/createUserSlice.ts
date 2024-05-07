@@ -1,4 +1,4 @@
-import { Address } from "wagmi";
+import { Address } from "viem";
 import { immer } from "zustand/middleware/immer";
 
 type State = {
@@ -13,7 +13,7 @@ type Actions = {
 
 export default immer<State & Actions>((set, get) => ({
   userId: null,
-  userAddress: "0x0000000000000000000000000000000000000000",
+  userAddress: null,
 
   setUserId: (id) =>
     set((state) => {
