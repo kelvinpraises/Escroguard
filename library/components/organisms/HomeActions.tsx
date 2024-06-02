@@ -1,6 +1,6 @@
 "use client";
-import useHomeActions from "../hooks/homeActions";
-import { HomeAction } from "../type";
+import useHomeActions from "../../hooks/homeActions";
+import { HomeAction } from "../../type";
 
 const HomeActions = ({ action }: { action: HomeAction | null }) => {
   // const {
