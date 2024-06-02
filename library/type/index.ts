@@ -1,4 +1,4 @@
-import { Address } from "wagmi";
+import { Address } from "viem";
 
 export type StateDispatch<T> = React.Dispatch<React.SetStateAction<T>>;
 
@@ -35,7 +35,7 @@ export interface DashboardState {
 
 export type HomeActionStateDispatch = React.Dispatch<Partial<HomeActionState>>;
 
-export interface SwapInfo {
+export interface SwapState {
   rates: string[];
   swapFee: string;
   initiator: SwapDetails;

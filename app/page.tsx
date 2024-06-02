@@ -1,15 +1,12 @@
 "use client";
+import { useState } from "react";
 import { ConnectButton } from "../library/components/ConnectButton";
 import HomeActions from "../library/components/HomeActions";
-import useAuth from "../library/hooks/auth";
-import usePolybase from "../library/hooks/polybase";
 import { HomeAction } from "../library/type";
-import { useState } from "react";
 
 export default function Home() {
   const [action, setAction] = useState<HomeAction | null>(null);
-  const polybase = usePolybase();
-  const loggedIn = useAuth(polybase);
+  // const loggedIn = useAuth();
 
   return (
     <div className=" flex w-full items-start h-screen">

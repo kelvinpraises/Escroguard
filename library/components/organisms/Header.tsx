@@ -1,5 +1,5 @@
 "use client";
-import { store } from "../store/store";
+import store from "@/store";
 import Navbar from "./Navbar";
 
 const Header = () => {

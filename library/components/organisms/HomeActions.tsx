@@ -1,18 +1,16 @@
 "use client";
-import useHomeActions from "../hooks/homeActions";
-import usePolybase from "../hooks/polybase";
-import { HomeAction } from "../type";
+import useHomeActions from "../../hooks/homeActions";
+import { HomeAction } from "../../type";
 
 const HomeActions = ({ action }: { action: HomeAction | null }) => {
-  const polybase = usePolybase();
-  const {
-    values,
-    updateValues,
-    joinSwap,
-    deploySwap,
-    isLoading,
-    setIsLoading,
-  } = useHomeActions(polybase);
+  // const {
+  //   values,
+  //   updateValues,
+  //   joinSwap,
+  //   deploySwap,
+  //   isLoading,
+  //   setIsLoading,
+  // } = useHomeActions();
 
   return (
     <div className=" max-w-[450px] w-full p-8 flex flex-col gap-[64px]">

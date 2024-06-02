@@ -4,7 +4,6 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { Inter, Roboto } from "next/font/google";
 import "./globals.css";
 import useEscroguard from "../library/hooks/escroguard";
-import usePolybase from "../library/hooks/polybase";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,9 +23,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const polybase = usePolybase();
-  useEscroguard({polybase});
-
   return (
     <html lang="en">
       <body className={`${inter.className} ${roboto.variable}`}>

@@ -1,13 +1,16 @@
 "use client";
+
 import React from "react";
-import RainbowKitProvider from "./rainbowkit";
+import ConnectKitProvider from "./connectkit";
 import WagmiProvider from "./wagmi";
 
 const RootProvider = ({ children }: { children: React.ReactNode }) => {
   return (
-    <WagmiProvider>
-      <RainbowKitProvider>{children}</RainbowKitProvider>
-    </WagmiProvider>
+    <div className="w-full">
+      <WagmiProvider>
+        <ConnectKitProvider>{children}</ConnectKitProvider>
+      </WagmiProvider>
+    </div>
   );
 };
 
