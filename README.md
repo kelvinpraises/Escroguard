@@ -13,7 +13,7 @@ yarn dev
 ```
 
 ##Screenshot
-![screenshot](screenshot/screenshot1.jpg?raw=true "1")
+![screenshot](public/screenshot/screenshot1.jpg?raw=true "1")
 
 ##Short Description
 <!-- text here -->
