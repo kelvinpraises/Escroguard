@@ -1,13 +1,12 @@
+import useStore from "@/store";
+import { useEffect, useReducer } from "react";
+import { useReadContract } from "wagmi";
 import { swapAbi } from "../data/constants";
-import { store } from "../store/store";
 import { DashboardState, Instance, InstanceState } from "../type";
-import { useReducer } from "react";
-import { getAddress } from "viem";
-import { useContractRead } from "wagmi";
 
-function useDashboard() {
-  const contractAddress = store((state) => state.contractAddress);
-  const address = store((state) => state.userAddress);
+function useSwapTradeHistory() {
+  const contractAddress = useStore((store) => store.contractAddress);
+  const address = useStore((store) => store.userAddress);
 
   if (!contractAddress || !address) throw new Error("Instance error");
 
@@ -25,23 +24,28 @@ function useDashboard() {
     }
   );
 
-  const { isLoading } = useContractRead({
+  const readContractResult = useReadContract({
     abi: swapAbi,
     address: contractAddress,
     functionName: "findInstances",
-    args: [getAddress(address)],
-    onSuccess(data) {
-      updateValues({
-        pendingSwaps: serializeInstances(data.filter((x) => x.state !== 1)),
-        swapHistory: serializeInstances(data),
-      });
-    },
+    args: [address],
   });
 
-  return { values, isLoading };
+  useEffect(() => {
+    if (readContractResult.status !== "success") return;
+
+    const data = readContractResult.data;
+
+    updateValues({
+      pendingSwaps: serializeInstances(data.filter((x) => x.state === 0)),
+      swapHistory: serializeInstances(data.filter((x) => x.state !== 0)),
+    });
+  }, [readContractResult]);
+
+  return { values, isLoading: readContractResult.isLoading };
 }
 
-export default useDashboard;
+export default useSwapTradeHistory;
 
 function serializeInstances(
   data: readonly {
@@ -58,8 +62,8 @@ function serializeInstances(
   return data.map((x) => {
     const state: Map<number, InstanceState> = new Map();
     state.set(0, "begun");
-    state.set(0, "cancelled");
-    state.set(0, "finished");
+    state.set(1, "finished");
+    state.set(2, "cancelled");
 
     const instance: Instance = {
       ...x,
