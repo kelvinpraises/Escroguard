@@ -8,11 +8,17 @@ const reducer = (
 ): HomeActionState => ({
   ...current,
   ...update,
+  swapFees:
+    update.swapFees === undefined
+      ? current.swapFees
+      : isNaN(update.swapFees)
+      ? 0
+      : Math.max(update.swapFees, 0),
 });
 
 const initialState = {
   swapName: "",
-  swapFees: "",
+  swapFees: 0,
   swapId: "",
   joined: [],
 };
