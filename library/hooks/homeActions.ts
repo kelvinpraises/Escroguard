@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useReducer } from "react";
-import { HomeActionState } from "../type";
+import { HomeActionState } from "../types";
 
 const reducer = (
   current: HomeActionState,

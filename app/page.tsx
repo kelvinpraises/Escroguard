@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import ActionCard from "@/components/molecules/ActionCard";
 import HomeActions from "@/components/organisms/HomeActions";
-import { HomeAction } from "@/type";
+import { HomeAction } from "@/types";
 
 export default function Home() {
   const [action, setAction] = useState<HomeAction | null>(null);

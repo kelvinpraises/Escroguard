@@ -1,7 +1,7 @@
 "use client";
 
 import useHomeActions from "@/hooks/homeActions";
-import { HomeAction } from "../../type";
+import { HomeAction } from "../../types";
 import Input from "../atoms/Input";
 
 interface HomeActionsProps {
