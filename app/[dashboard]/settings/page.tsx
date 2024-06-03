@@ -1,18 +1,10 @@
-"use client";
-import Header from "../../../library/components/Header";
-import * as Toggle from "@radix-ui/react-toggle";
-import * as Collapsible from "@radix-ui/react-collapsible";
-import { RowSpacingIcon, Cross2Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { useState } from "react";
-import MembersCollapsible from "../../../library/components/MembersCollapsible";
-import TokenCollapsible from "../../../library/components/TokenCollapsible";
+
+import TokenCollapsible from "@/components/molecules/TokenCollapsible";
 
 const Settings = () => {
-  const [open, setOpen] = useState(false);
   return (
     <div className=" flex flex-col">
-      <Header />
       <div className=" flex flex-col p-8 gap-8">
         <div className=" flex items-center gap-4">
           <Link href={"/dashboard"}>
@@ -81,8 +73,6 @@ const Settings = () => {
                 Add
               </button>
             </div>
-
-            <MembersCollapsible />
           </div>
 
           <div className=" flex flex-col gap-8">
@@ -147,20 +137,6 @@ const Settings = () => {
               <button className=" bg-[#F5F150] text-[20px] px-8 rounded-[5px] text-[#F00] font-medium h-[60px] ">
                 TRANSFER OWNERSHIP
               </button>
-            </div>
-
-            <div className=" flex flex-col gap-4">
-              <p className=" text-white text-xl font-semibold font-roboto">
-                Pause and unpause on all swaps
-              </p>
-              <Toggle.Root
-                className=" bg-[#F5F150] text-[20px] px-8 rounded-[5px] text-[#F00] font-medium h-[60px] w-min whitespace-nowrap data-[state=on]:bg-[#f7f695]"
-                // aria-label="Toggle italic"
-              >
-                {/* <button className=" bg-[#F5F150] text-[20px] px-8 rounded-[5px] text-[#F00] font-medium h-[60px] w-min whitespace-nowrap"> */}
-                PAUSE SWAP CONTRACT
-                {/* </button> */}
-              </Toggle.Root>
             </div>
 
             <div className=" flex flex-col gap-4">
