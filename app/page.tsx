@@ -20,7 +20,7 @@ export default function Home() {
               Own Your Swaps!
             </p>
             <p className="w-[726px] text-[#5B5B5B] text-xl text-center">
-              Escrøguard puts you in the driver's seat, allowing you to take
+              Escrøguard puts you in the driver&apos;s seat, allowing you to take
               full control of your trades. Create a streamlined trading
               experience while enjoying the peace of mind that comes with true
               ownership. Connect your wallet to create, join, and view previous
