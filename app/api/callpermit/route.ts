@@ -5,7 +5,6 @@
 // import { callPermitAbi } from "@/data/constants";
 // import { CallPermit } from "@/type";
 
-
 // export async function POST(request: NextRequest) {
 //   const json = deserialize(await request.text()) as CallPermit;
 //   console.log(json);
@@ -36,3 +35,4 @@
 //     headers: { "Content-Type": "application/json" },
 //   });
 // }
+export async function POST() {}
