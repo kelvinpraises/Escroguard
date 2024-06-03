@@ -1,22 +1,12 @@
+import { createKysely } from "@vercel/postgres-kysely";
+import "dotenv/config";
 import { promises as fs } from "fs";
-import {
-  FileMigrationProvider,
-  Kysely,
-  Migrator,
-  PostgresDialect,
-} from "kysely";
+import { FileMigrationProvider, Migrator } from "kysely";
 import * as path from "path";
-import { Pool } from "pg";
+import yargs from "yargs";
 
 async function migrateToLatest() {
-  const db = new Kysely<any>({
-    dialect: new PostgresDialect({
-      pool: new Pool({
-        host: "localhost",
-        database: "kysely_test",
-      }),
-    }),
-  });
+  const db = createKysely<any>();
 
   const migrator = new Migrator({
     db,
@@ -24,7 +14,7 @@ async function migrateToLatest() {
       fs,
       path,
       // This needs to be an absolute path.
-      migrationFolder: path.join(__dirname, "some/path/to/migrations"),
+      migrationFolder: path.join(__dirname),
     }),
   });
 
@@ -47,4 +37,42 @@ async function migrateToLatest() {
   await db.destroy();
 }
 
-migrateToLatest();
+async function migrateDown() {
+  const db = createKysely<any>();
+
+  const migrator = new Migrator({
+    db,
+    provider: new FileMigrationProvider({
+      fs,
+      path,
+      // This needs to be an absolute path.
+      migrationFolder: path.join(__dirname),
+    }),
+  });
+
+  const { error, results } = await migrator.migrateDown();
+
+  results?.forEach((it) => {
+    if (it.status === "Success") {
+      console.log(
+        `migration "${it.migrationName}" was rolled back successfully`
+      );
+    } else if (it.status === "Error") {
+      console.error(`failed to roll back migration "${it.migrationName}"`);
+    }
+  });
+
+  if (error) {
+    console.error("failed to migrate down");
+    console.error(error);
+    process.exit(1);
+  }
+
+  await db.destroy();
+}
+
+const argv = yargs(process.argv.slice(2))
+  .command("up", "Run migrations up to the latest version", {}, migrateToLatest)
+  .command("down", "Rollback the last migration", {}, migrateDown)
+  .demandCommand(1, "You need at least one command before moving on")
+  .help().argv;
