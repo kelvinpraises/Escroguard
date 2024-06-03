@@ -19,7 +19,7 @@ export interface Instance {
 
 export interface HomeActionState {
   swapName: string;
-  swapFees: string;
+  swapFees: number;
   swapId: string;
   joined: {
     id: string;

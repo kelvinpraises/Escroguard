@@ -10,7 +10,7 @@ import {
   useWriteContract,
 } from "wagmi";
 import { swapAbi } from "../data/constants";
-import { SwapAction, SwapState } from "../type";
+import { SwapAction, SwapState } from "../types";
 
 const initialState: SwapState = {
   rates: [],

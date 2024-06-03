@@ -1,13 +1,8 @@
-import Header from "../../../library/components/Header";
-import MembersCollapsible from "../../../library/components/MembersCollapsible";
 import Link from "next/link";
-import React from "react";
 
 const About = () => {
   return (
     <div className=" flex flex-col">
-      <Header />
-
       <div className=" flex flex-col p-8 gap-8 h-[calc(100vh-124px)]">
         <div className=" flex items-center gap-4">
           <Link href={"/dashboard"}>
@@ -31,11 +26,6 @@ const About = () => {
               <img src="/LookUp.svg" alt="" />
             </div>
           </div>
-
-          <MembersCollapsible />
-
-
-            
         </div>
       </div>
     </div>

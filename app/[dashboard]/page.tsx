@@ -1,12 +1,10 @@
-import BlackCard from "../../library/components/BlackCard";
-import Header from "../../library/components/Header";
-import SpentCard from "../../library/components/SpentCard";
-import Transaction from "../../library/components/Transaction";
+import BlackCard from "@/components/molecules/BlackCard";
+import SpentCard from "@/components/molecules/SpentCard";
+import Transaction from "@/components/organisms/Transaction";
 
 const Dashboard = () => {
   return (
     <div className=" flex flex-col">
-      <Header />
       <div className=" flex flex-col p-8 gap-[128px]">
         <div className=" flex gap-[64px]">
           <SpentCard />
@@ -18,7 +16,7 @@ const Dashboard = () => {
               { img: "Info.svg", name: "about" },
               { img: "Setting.svg", name: "settings" },
             ].map((item, i) => (
-              <BlackCard img={item.img} name={item.name} />
+              <BlackCard key={i} img={item.img} name={item.name} />
             ))}
           </div>
         </div>

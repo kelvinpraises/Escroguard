@@ -1,35 +1,38 @@
-import { callPermitAbi } from "../../../library/data/constants";
-import { CallPermit } from "../../../library/type";
-import { Address, deserialize, writeContract } from "@wagmi/core";
-import { NextRequest, NextResponse } from "next/server";
+// import { deserialize, writeContract } from "@wagmi/core";
+// import { NextRequest, NextResponse } from "next/server";
+// import { type Address } from "viem";
 
-export async function POST(request: NextRequest) {
-  const json = deserialize(await request.text()) as CallPermit;
-  console.log(json);
+// import { callPermitAbi } from "@/data/constants";
+// import { CallPermit } from "@/type";
 
-  const { hash } = await writeContract({
-    address: process.env.NEXT_PUBLIC_FACTORY as Address,
-    abi: callPermitAbi,
-    functionName: "dispatch",
-    args: [
-      json.from,
-      json.to,
-      json.value,
-      json.data,
-      json.gaslimit,
-      json.deadline,
-      json.v,
-      json.r,
-      json.s,
-    ],
-  });
+// export async function POST(request: NextRequest) {
+//   const json = deserialize(await request.text()) as CallPermit;
+//   console.log(json);
 
-  let json_response = {
-    status: "success",
-  };
+//   const { hash } = await writeContract({
+//     address: process.env.NEXT_PUBLIC_FACTORY as Address,
+//     abi: callPermitAbi,
+//     functionName: "dispatch",
+//     args: [
+//       json.from,
+//       json.to,
+//       json.value,
+//       json.data,
+//       json.gaslimit,
+//       json.deadline,
+//       json.v,
+//       json.r,
+//       json.s,
+//     ],
+//   });
 
-  return new NextResponse(JSON.stringify(json_response), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
-}
+//   let json_response = {
+//     status: "success",
+//   };
+
+//   return new NextResponse(JSON.stringify(json_response), {
+//     status: 200,
+//     headers: { "Content-Type": "application/json" },
+//   });
+// }
+export async function POST() {}

@@ -9,7 +9,7 @@ import * as path from "path";
 import { Pool } from "pg";
 
 async function migrateToLatest() {
-  const db = new Kysely<Database>({
+  const db = new Kysely<any>({
     dialect: new PostgresDialect({
       pool: new Pool({
         host: "localhost",

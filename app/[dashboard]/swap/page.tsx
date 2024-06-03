@@ -1,11 +1,9 @@
-import Header from "../../../library/components/Header";
-import SwapSelect from "../../../library/components/SwapSelect";
+import SwapSelect from "@/components/molecules/SwapSelect";
 import Link from "next/link";
 
 const Swap = () => {
   return (
     <div className=" flex flex-col">
-      <Header />
       <div className=" flex flex-col p-8 gap-8">
         <div className=" flex items-center gap-4">
           <Link href={"/dashboard"}>
