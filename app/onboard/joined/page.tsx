@@ -24,7 +24,7 @@ const JoinedSwaps = () => {
             </div>
           ))
         ) : (
-          <p className="text-white">You haven't joined a swap space yet</p>
+          <p className="text-white">You haven&apos;t joined a swap space yet</p>
         )}
       </div>
     </div>
