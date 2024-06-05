@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { Suspense, useContext, useEffect } from "react";
 
 import Loading from "@/components/atoms/Loading";
 import { UserContext } from "@/providers/userAuthData";
@@ -65,4 +65,10 @@ const Callback = () => {
   return <Loading />;
 };
 
-export default Callback;
+const CallbackWithSuspense = () => (
+  <Suspense fallback={<Loading />}>
+    <Callback />
+  </Suspense>
+);
+
+export default CallbackWithSuspense;
