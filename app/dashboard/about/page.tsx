@@ -5,7 +5,7 @@ const About = () => {
     <div className=" flex flex-col">
       <div className=" flex flex-col p-8 gap-8 h-[calc(100vh-124px)]">
         <div className=" flex items-center gap-4">
-          <Link href={"/dashboard"}>
+          <Link href={"/"}>
             <div className=" bg-[#F5F150] py-2 px-4 rounded-[5px]">
               <img src="/Arrow.svg" alt="" />
             </div>
