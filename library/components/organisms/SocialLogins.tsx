@@ -1,11 +1,11 @@
+"use client";
+
 import { OAuthProvider } from "@magic-ext/oauth";
 import { useState } from "react";
 
-const SocialLogins = ({
-  onSubmit,
-}: {
-  onSubmit: (provider: OAuthProvider) => Promise<void>;
-}) => {
+import { magic } from "@/services/magic";
+
+const SocialLogins = () => {
   const providers: OAuthProvider[] = [
     "apple",
     "google",
@@ -13,6 +13,21 @@ const SocialLogins = ({
     "github",
   ] as const;
   const [isRedirecting, setIsRedirecting] = useState(false);
+
+  async function handleLoginWithSocial(provider: OAuthProvider) {
+    try {
+      if (!magic) {
+        throw new Error("Magic instance is not available");
+      }
+
+      await magic.oauth.loginWithRedirect({
+        provider, // google, apple, etc
+        redirectURI: new URL("/callback", window.location.origin).href, // required redirect to finish social login
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -25,7 +40,7 @@ const SocialLogins = ({
               className="social-btn"
               onClick={() => {
                 setIsRedirecting(true);
-                onSubmit(provider);
+                handleLoginWithSocial(provider);
               }}
               key={provider}
               style={{ backgroundImage: `url(${provider}.png)` }}
