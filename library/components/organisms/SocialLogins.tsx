@@ -6,12 +6,7 @@ import { useState } from "react";
 import { magic } from "@/services/magic";
 
 const SocialLogins = () => {
-  const providers: OAuthProvider[] = [
-    "apple",
-    "google",
-    "facebook",
-    "github",
-  ] as const;
+  const providers: OAuthProvider[] = ["apple", "google", "facebook", "github"];
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   async function handleLoginWithSocial(provider: OAuthProvider) {
