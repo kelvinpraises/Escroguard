@@ -41,6 +41,7 @@ export interface SwapState {
   initiator: SwapDetails;
   counterParty: SwapDetails;
 }
+
 export interface SwapDetails {
   userAddress: Address | null;
   tokenDetails: {
