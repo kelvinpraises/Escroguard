@@ -2,7 +2,6 @@
 
 import { Inter } from "next/font/google";
 
-import Header from "@/components/organisms/Header";
 import RootProvider from "@/providers";
 import { cn } from "@/utils";
 
