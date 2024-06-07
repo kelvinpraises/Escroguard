@@ -1,9 +1,10 @@
-import { MagicUserMetadata } from "@/services/magic/magicClient";
-import { TOKEN_NAME, setTokenCookie } from "@/utils/cookie";
-import { verifyJwtToken } from "@/utils/jwt";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+
+import { MagicUserMetadata } from "@/services/magic/magicClient";
+import { TOKEN_NAME, setTokenCookie } from "@/utils/cookie";
+import { verifyJwtToken } from "@/utils/jwt";
 
 /**
  * Verify then refresh JWT each time user sends a request to /api/user
