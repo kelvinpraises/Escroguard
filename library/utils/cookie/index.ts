@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { getHostname } from "..";
 
 export const TOKEN_NAME = "escroguard_auth_token";
 const SESSION_LENGTH_IN_DAYS = parseInt(
@@ -17,7 +18,14 @@ export function setTokenCookie(token: string) {
     secure: process.env.NODE_ENV === "production", // if true, cookie will only be set if https (won't be set if http)
     path: "/",
     sameSite: "lax",
-    domain: ".example.local", // make cookie available on all subdomains TODO:
+    domain:
+      getHostname(
+        `${
+          process.env.NEXT_PUBLIC_ROOT_DOMAIN ||
+          process.env.NEXT_PUBLIC_VERCEL_ENV ||
+          ""
+        }`
+      ) || "", // make cookie available on all subdomains TODO:
   });
 }
 
