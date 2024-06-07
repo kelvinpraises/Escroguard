@@ -1,7 +1,7 @@
+import { isDevelopment } from "@/utils";
 import { redirect } from "next/navigation";
 
 const page = () => {
-  const isDevelopment = process.env.NODE_ENV === "development";
   const protocol = isDevelopment ? "http" : "https";
 
   return redirect(
