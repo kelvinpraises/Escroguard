@@ -1,5 +1,5 @@
 import { TOKEN_NAME } from "@/utils/cookie";
-import jwt from "jsonwebtoken";
+import { verifyJwtToken } from "@/utils/jwt";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,6 +21,9 @@ export const config = {
 };
 
 export default async function middleware(req: NextRequest) {
+  const isDevelopment = process.env.NODE_ENV === "development";
+
+  const protocol = isDevelopment ? "http" : "https";
   const url = req.nextUrl;
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN;
   let hostname = req.headers
@@ -33,6 +36,7 @@ export default async function middleware(req: NextRequest) {
   const path = `${url.pathname}${
     searchParams.length > 0 ? `?${searchParams}` : ""
   }`;
+  const urlPath = new URL(`${protocol}://${rootDomain}/`);
 
   // special case for Vercel preview deployment URLs
   if (
@@ -43,34 +47,57 @@ export default async function middleware(req: NextRequest) {
   }
 
   // rewrite root application to `/onboard` folder
-  if (hostname === "localhost:3000" || hostname === rootDomain) {
-    return NextResponse.rewrite(
-      new URL(`/onboard${path === "/" ? "" : path}`, req.url)
-    );
-  }
+  if (hostname === rootDomain) {
+    console.log("1");
+    if (path === "/") {
+      return NextResponse.rewrite(new URL(`/onboard/`, req.url));
+    }
 
-  // rewrite if there's a subdomain to `/dashboard` folder
-  if (subdomain) {
     try {
       const cookieStore = cookies();
       const token = cookieStore.get(TOKEN_NAME);
+      console.log(token);
 
       if (!token) {
-        console.log("url.toString()");
-        return NextResponse.redirect(new URL(`/`, req.url));
+        console.log("url.toString(1)");
+        return NextResponse.redirect(new URL(`/`, urlPath));
       }
 
-      const c = jwt.verify(token.value, process.env.JWT_SECRET || "");
+      await verifyJwtToken(token.value);
 
-      console.log("cccccc");
-      console.log(c);
-      console.log("cccccc");
+      return NextResponse.rewrite(
+        new URL(`/onboard${path === "/" ? "" : path}`, req.url)
+      );
+    } catch (error) {
+      return NextResponse.redirect(new URL(`/`, urlPath));
+    }
+  }
+
+  // Only rewrite if there's a subdomain to `/dashboard` folder
+  if (subdomain) {
+    console.log("2");
+    if (path === "/redirect") {
+      return NextResponse.rewrite(new URL(`/dashboard/redirect`, req.url));
+    }
+
+    try {
+      const cookieStore = cookies();
+      const token = cookieStore.get(TOKEN_NAME);
+      console.log(token);
+
+      if (!token) {
+        console.log("url.toString(2)");
+        // return
+        return NextResponse.redirect(new URL(`/redirect`, urlPath));
+      }
+
+      await verifyJwtToken(token.value);
 
       return NextResponse.rewrite(
         new URL(`/dashboard${path === "/" ? "" : path}`, req.url)
       );
     } catch (error) {
-      return NextResponse.redirect(new URL(`/onboard/`, req.url));
+      return NextResponse.redirect(new URL(`/redirect`, urlPath));
     }
   }
 }
