@@ -1,6 +1,6 @@
 #!/bin/sh
 
-read -p "Do you want to generate code? (y/n): " choice
+read -p "Do you want to generate kysely schema (recomended)? (y/n): " choice
 case "$choice" in 
   y|Y ) 
     echo "Generating code..."
