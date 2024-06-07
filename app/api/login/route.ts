@@ -4,6 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { magicAdmin } from "@/services/magic/magicAdmin";
 import { setTokenCookie } from "@/utils/cookie";
 
+/**
+ * Use Magic to validate the DID token sent in the Authorization header
+ * Create JWT containing info about the user
+ * Set it inside a cookie, which will be automatically sent on subsequent requests to our server
+ * Return the user data to frontend
+ */
 export async function POST(request: NextRequest) {
   try {
     const authHeader = request.headers.get("authorization");
