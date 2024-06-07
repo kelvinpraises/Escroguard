@@ -1,6 +1,25 @@
 #!/bin/sh
 
-read -p "Do you want to generate kysely schema (recomended)? (y/n): " choice
+# Check for -y flag
+AUTO_YES=false
+while getopts ":y" opt; do
+  case $opt in
+    y)
+      AUTO_YES=true
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [ "$AUTO_YES" = true ]; then
+  choice="y"
+else
+  read -p "Do you want to generate kysely schema (recommended)? (y/n): " choice
+fi
+
 case "$choice" in 
   y|Y ) 
     echo "Generating code..."
