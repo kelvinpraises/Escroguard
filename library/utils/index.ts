@@ -67,3 +67,5 @@ export function getHostname(url: string): string | null {
     return null; // or you can return a custom error message or value
   }
 }
+
+export const isDevelopment = process.env.NODE_ENV === "development";
