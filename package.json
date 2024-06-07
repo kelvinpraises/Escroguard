@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "predev": "chmod +x kysely_generate.sh",
-    "dev": "npm run generate && next dev",
-    "build": "next build",
+    "dev": "chmod +x kysely_generate.sh && ./kysely_generate.sh && next dev",
+    "build": "chmod +x kysely_generate.sh && ./kysely_generate.sh -y && next build",
     "start": "next start",
     "lint": "next lint",
     "generate": "./kysely_generate.sh",
