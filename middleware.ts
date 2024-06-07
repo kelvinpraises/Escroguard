@@ -1,3 +1,6 @@
+import { TOKEN_NAME } from "@/utils/cookie";
+import { verifyJwtToken } from "@/utils/jwt";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
@@ -18,55 +21,83 @@ export const config = {
 };
 
 export default async function middleware(req: NextRequest) {
-  const url = req.nextUrl;
+  const isDevelopment = process.env.NODE_ENV === "development";
 
-  // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
+  const protocol = isDevelopment ? "http" : "https";
+  const url = req.nextUrl;
+  const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN;
   let hostname = req.headers
     .get("host")!
-    .replace(".localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
+    .replace(".localhost:3000", `.${rootDomain}`);
+  const subdomain = hostname.endsWith(`.${rootDomain}`)
+    ? hostname.replace(`.${rootDomain}`, "")
+    : null;
+  const searchParams = req.nextUrl.searchParams.toString();
+  const path = `${url.pathname}${
+    searchParams.length > 0 ? `?${searchParams}` : ""
+  }`;
+  const urlPath = new URL(`${protocol}://${rootDomain}/`);
 
   // special case for Vercel preview deployment URLs
   if (
     hostname.includes("---") &&
     hostname.endsWith(`.${process.env.NEXT_PUBLIC_VERCEL_DEPLOYMENT_SUFFIX}`)
   ) {
-    hostname = `${hostname.split("---")[0]}.${
-      process.env.NEXT_PUBLIC_ROOT_DOMAIN
-    }`;
+    hostname = `${hostname.split("---")[0]}.${rootDomain}`;
   }
-
-  const searchParams = req.nextUrl.searchParams.toString();
-  // Get the pathname of the request (e.g. /, /about, /blog/first-post)
-  const path = `${url.pathname}${
-    searchParams.length > 0 ? `?${searchParams}` : ""
-  }`;
-
-  console.log("##########################################################");
-  console.log(hostname);
-  console.log("##########################################################");
 
   // rewrite root application to `/onboard` folder
-  if (
-    hostname === "localhost:3000" ||
-    hostname === process.env.NEXT_PUBLIC_ROOT_DOMAIN
-  ) {
-    return NextResponse.rewrite(
-      new URL(`/onboard${path === "/" ? "" : path}`, req.url)
-    );
+  if (hostname === rootDomain) {
+    console.log("1");
+    if (path === "/") {
+      return NextResponse.rewrite(new URL(`/onboard/`, req.url));
+    }
+
+    try {
+      const cookieStore = cookies();
+      const token = cookieStore.get(TOKEN_NAME);
+      console.log(token);
+
+      if (!token) {
+        console.log("url.toString(1)");
+        return NextResponse.redirect(new URL(`/`, urlPath));
+      }
+
+      await verifyJwtToken(token.value);
+
+      return NextResponse.rewrite(
+        new URL(`/onboard${path === "/" ? "" : path}`, req.url)
+      );
+    } catch (error) {
+      return NextResponse.redirect(new URL(`/`, urlPath));
+    }
   }
-
-  // Root domain from environment variable
-  const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN;
-
-  // Extract subdomain if exists
-  const subdomain = hostname.endsWith(`.${rootDomain}`)
-    ? hostname.replace(`.${rootDomain}`, "")
-    : null;
 
   // Only rewrite if there's a subdomain to `/dashboard` folder
   if (subdomain) {
-    return NextResponse.rewrite(
-      new URL(`/dashboard${path === "/" ? "" : path}`, req.url)
-    );
+    console.log("2");
+    if (path === "/redirect") {
+      return NextResponse.rewrite(new URL(`/dashboard/redirect`, req.url));
+    }
+
+    try {
+      const cookieStore = cookies();
+      const token = cookieStore.get(TOKEN_NAME);
+      console.log(token);
+
+      if (!token) {
+        console.log("url.toString(2)");
+        // return
+        return NextResponse.redirect(new URL(`/redirect`, urlPath));
+      }
+
+      await verifyJwtToken(token.value);
+
+      return NextResponse.rewrite(
+        new URL(`/dashboard${path === "/" ? "" : path}`, req.url)
+      );
+    } catch (error) {
+      return NextResponse.redirect(new URL(`/redirect`, urlPath));
+    }
   }
 }

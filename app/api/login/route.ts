@@ -1,8 +1,8 @@
-import { Magic } from "@magic-sdk/admin";
+import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
-// Initiating Magic instance for server-side methods
-const magic = new Magic(process.env.MAGIC_SECRET_KEY);
+import { magicAdmin } from "@/services/magic/magicAdmin";
+import { setTokenCookie } from "@/utils/cookie";
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,9 +26,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    magic.token.validate(didToken);
+    magicAdmin.token.validate(didToken);
 
-    return NextResponse.json({ authenticated: true }, { status: 200 });
+    const metadata = await magicAdmin.users.getMetadataByToken(didToken);
+
+    const SESSION_LENGTH_IN_DAYS = parseInt(
+      process.env.SESSION_LENGTH_IN_DAYS || "1",
+      10
+    );
+
+    let token = jwt.sign(
+      {
+        ...metadata,
+        exp:
+          Math.floor(Date.now() / 1000) + 60 * 60 * 24 * SESSION_LENGTH_IN_DAYS,
+      },
+      process.env.JWT_SECRET || ""
+    );
+
+    setTokenCookie(token);
+
+    return NextResponse.json({ user: metadata }, { status: 200 });
   } catch (error: unknown) {
     // Ensure error is of type Error
     if (error instanceof Error) {

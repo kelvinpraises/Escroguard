@@ -5,7 +5,7 @@ import { Suspense, useContext, useEffect } from "react";
 
 import Loading from "@/components/atoms/Loading";
 import { UserContext } from "@/providers/userAuthData";
-import { magic } from "@/services/magic";
+import { magicClient } from "@/services/magic/magicClient";
 
 const Callback = () => {
   const router = useRouter();
@@ -21,20 +21,20 @@ const Callback = () => {
 
   // `getRedirectResult()` returns an object with user data from Magic and the social provider
   const finishSocialLogin = async () => {
-    if (!magic) {
+    if (!magicClient) {
       throw new Error("Magic instance is not available");
     }
-    let result = await magic.oauth.getRedirectResult();
+    let result = await magicClient.oauth.getRedirectResult();
     authenticateWithServer(result.magic.idToken);
   };
 
   // `loginWithCredential()` returns a didToken for the user logging in
   const finishEmailRedirectLogin = () => {
-    if (!magic) {
+    if (!magicClient) {
       throw new Error("Magic instance is not available");
     }
     if (magicCredential) {
-      magic.auth.loginWithCredential().then((didToken: string | null) => {
+      magicClient.auth.loginWithCredential().then((didToken: string | null) => {
         didToken && authenticateWithServer(didToken);
       });
     }
@@ -50,14 +50,13 @@ const Callback = () => {
       },
     });
 
-    if (!magic) {
+    if (!magicClient) {
       throw new Error("Magic instance is not available");
     }
 
     if (res.status === 200) {
-      // Set the UserContext to the now logged in user
-      let userMetadata = await magic.user.getMetadata();
-      setUser(userMetadata);
+      let data = await res.json();
+      setUser(data.user);
       router.push("/");
     }
   };
