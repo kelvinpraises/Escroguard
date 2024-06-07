@@ -1,4 +1,3 @@
-import { MagicUserMetadata,  magicClient } from "@/services/magic/magicClient";
 import {
   Dispatch,
   SetStateAction,
@@ -6,6 +5,8 @@ import {
   useEffect,
   useState,
 } from "react";
+
+import { MagicUserMetadata, magicClient } from "@/services/magic/magicClient";
 
 export type ExtendedMagicUserMetadata = MagicUserMetadata & {
   loading: boolean;
