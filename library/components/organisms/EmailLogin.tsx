@@ -17,7 +17,7 @@ import {
 } from "@/components/atoms/Form";
 import Input from "@/components/atoms/Input";
 import { UserContext } from "@/providers/userAuthData";
-import { magic } from "@/services/magic";
+import { RPCError, RPCErrorCode, magicClient } from "@/services/magic";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -26,21 +26,20 @@ const formSchema = z.object({
 });
 
 const EmailLogin = () => {
-  const [user, setUser] = useContext(UserContext);
+  const [_, setUser] = useContext(UserContext);
   const [disabled, setDisabled] = useState(false);
 
   async function handleLoginWithEmail(email: string) {
     try {
-      setDisabled(true); // disable login button to prevent multiple emails from being triggered
-
-      if (!magic) {
+      setDisabled(true);
+      if (!magicClient) {
         throw new Error("Magic instance is not available");
       }
 
-      // Trigger Magic link to be sent to user
-      let didToken = await magic.auth.loginWithMagicLink({
+      let didToken = await magicClient.auth.loginWithMagicLink({
         email,
         redirectURI: new URL("/callback", window.location.origin).href, // optional redirect back to your app after magic link is clicked
+        // showUI: false
       });
 
       // Validate didToken with server
@@ -53,19 +52,27 @@ const EmailLogin = () => {
       });
 
       if (res.status === 200) {
-        // Set the UserContext to the now logged in user
-        let userMetadata = await magic.user.getMetadata();
-        setUser(userMetadata);
+        let data = await res.json();
+        setUser(data.user);
       }
 
-      setDisabled(false); // re-enable login button - button might be active when logged out
+      setDisabled(false);
     } catch (error) {
-      setDisabled(false); // re-enable login button - user may have requested to edit their email
+      setDisabled(false);
       console.log(error);
+      if (error instanceof RPCError) {
+        switch (error.code) {
+          case RPCErrorCode.MagicLinkFailedVerification:
+          case RPCErrorCode.MagicLinkExpired:
+          case RPCErrorCode.MagicLinkRateLimited:
+          case RPCErrorCode.UserAlreadyLoggedIn:
+            // Handle errors accordingly :)
+            break;
+        }
+      }
     }
   }
 
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -73,11 +80,7 @@ const EmailLogin = () => {
     },
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
     handleLoginWithEmail(values.email);
   }
 
