@@ -27,4 +27,4 @@ const createMagic = (key: string | undefined) => {
 };
 
 const magicKey = process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY;
-export const magic = magicKey ? createMagic(magicKey) : null;
+export const magicClient = magicKey ? createMagic(magicKey) : null;

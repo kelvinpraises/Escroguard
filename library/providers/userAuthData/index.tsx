@@ -1,5 +1,4 @@
-import { magic } from "@/services/magic";
-import { MagicUserMetadata } from "magic-sdk";
+import { MagicUserMetadata,  magicClient } from "@/services/magic";
 import {
   Dispatch,
   SetStateAction,
@@ -25,18 +24,20 @@ const UserAuthDataProvider = ({ children }: { children: React.ReactNode }) => {
   // If isLoggedIn is true, set the UserContext with user data
   // Otherwise, redirect to /login and set UserContext to { user: null }
   useEffect(() => {
-    if (!magic) {
+    if (!magicClient) {
       throw new Error("Magic instance is not available");
     }
 
     setUser({ loading: true });
-    magic.user.isLoggedIn().then((isLoggedIn) => {
-      if (!magic) {
+    magicClient.user.isLoggedIn().then((isLoggedIn) => {
+      if (!magicClient) {
         throw new Error("Magic instance is not available");
       }
 
       if (isLoggedIn) {
-        magic.user.getMetadata().then((userData) => setUser(userData));
+        magicClient.user.getMetadata().then((userData) => {
+          return setUser(userData);
+        });
       } else {
         setUser(undefined);
       }
