@@ -45,3 +45,25 @@ export function isEmpty(input: any): boolean {
 
   return false;
 }
+
+export function getHostname(url: string): string | null {
+  try {
+    // If the URL doesn't have a protocol, prepend "http://"
+    if (
+      !url.startsWith("http://") &&
+      !url.startsWith("https://") &&
+      !url.startsWith("ftp://")
+    ) {
+      url = "http://" + url;
+    }
+    const newURL = new URL(url);
+    return newURL.hostname;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Invalid URL:", error.message);
+    } else {
+      console.error("Unknown error");
+    }
+    return null; // or you can return a custom error message or value
+  }
+}
