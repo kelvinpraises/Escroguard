@@ -17,7 +17,7 @@ import {
 } from "@/components/atoms/Form";
 import Input from "@/components/atoms/Input";
 import { UserContext } from "@/providers/userAuthData";
-import { RPCError, RPCErrorCode, magicClient } from "@/services/magic";
+import { RPCError, RPCErrorCode, magicClient } from "@/services/magic/magicClient";
 
 const formSchema = z.object({
   email: z.string().email({

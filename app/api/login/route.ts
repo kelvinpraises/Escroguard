@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
-import { magicAdmin } from "@/services/magic";
+import { magicAdmin } from "@/services/magic/magicAdmin";
 import { setTokenCookie } from "@/utils/cookie";
 
 export async function POST(request: NextRequest) {

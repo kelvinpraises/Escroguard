@@ -1,4 +1,4 @@
-import { MagicUserMetadata,  magicClient } from "@/services/magic";
+import { MagicUserMetadata,  magicClient } from "@/services/magic/magicClient";
 import {
   Dispatch,
   SetStateAction,

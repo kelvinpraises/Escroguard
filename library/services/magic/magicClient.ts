@@ -28,3 +28,5 @@ const createMagic = (key: string | undefined) => {
 
 const magicKey = process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY;
 export const magicClient = magicKey ? createMagic(magicKey) : null;
+export { RPCError, RPCErrorCode } from "magic-sdk";
+export type { MagicUserMetadata } from "magic-sdk";

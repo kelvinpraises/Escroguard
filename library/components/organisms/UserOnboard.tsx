@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { UserContext } from "@/providers/userAuthData";
-import { magic } from "@/services/magic";
+import { magicClient } from "@/services/magic/magicClient";
 import { useContext } from "react";
 import Loading from "../atoms/Loading";
 import EmailLogin from "./EmailLogin";
@@ -33,11 +33,11 @@ export const UserOnboard = () => {
   ];
 
   const logout = () => {
-    if (!magic) {
+    if (!magicClient) {
       throw new Error("Magic instance is not available");
     }
 
-    magic.user.logout().then(() => {
+    magicClient.user.logout().then(() => {
       setUser(undefined);
     });
   };

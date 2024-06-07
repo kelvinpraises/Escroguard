@@ -5,7 +5,7 @@ import { Suspense, useContext, useEffect } from "react";
 
 import Loading from "@/components/atoms/Loading";
 import { UserContext } from "@/providers/userAuthData";
-import { magicClient } from "@/services/magic";
+import { magicClient } from "@/services/magic/magicClient";
 
 const Callback = () => {
   const router = useRouter();
