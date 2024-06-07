@@ -23,12 +23,12 @@ fi
 case "$choice" in 
   y|Y ) 
     echo "Generating code..."
-    node -p 'require("dotenv").config().parsed.POSTGRES_URL'
-    process.env.POSTGRES_URL
-    node -p process.env.POSTGRES_URL
+    POSTGRES_URL1=$(npx -p dotenv -c 'node -e "require(\"dotenv\").config(); console.log(process.env.POSTGRES_URL);"')
     POSTGRES_URL=$(node -p 'require("dotenv").config().parsed.POSTGRES_URL')
+    echo $POSTGRES_URL1
     echo $POSTGRES_URL
-    kysely-codegen --log-level=debug --print --dialect=postgres --url=$POSTGRES_URL
+    node -p process.env.POSTGRES_URL
+    # kysely-codegen --log-level=debug --print --dialect=postgres --url=$POSTGRES_URL
     ;;
   * ) 
     echo "Skipping code generation..."
