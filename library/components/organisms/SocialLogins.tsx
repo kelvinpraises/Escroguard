@@ -3,7 +3,7 @@
 import { OAuthProvider } from "@magic-ext/oauth";
 import { useState } from "react";
 
-import { magic } from "@/services/magic";
+import { magicClient } from "@/services/magic/magicClient";
 
 const SocialLogins = () => {
   const providers: OAuthProvider[] = ["apple", "google", "facebook", "github"];
@@ -11,11 +11,11 @@ const SocialLogins = () => {
 
   async function handleLoginWithSocial(provider: OAuthProvider) {
     try {
-      if (!magic) {
+      if (!magicClient) {
         throw new Error("Magic instance is not available");
       }
 
-      await magic.oauth.loginWithRedirect({
+      await magicClient.oauth.loginWithRedirect({
         provider, // google, apple, etc
         redirectURI: new URL("/callback", window.location.origin).href, // required redirect to finish social login
       });
