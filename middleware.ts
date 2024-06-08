@@ -1,3 +1,4 @@
+import { isDevelopment } from "@/utils";
 import { TOKEN_NAME } from "@/utils/cookie";
 import { verifyJwtToken } from "@/utils/jwt";
 import { cookies } from "next/headers";
@@ -21,7 +22,8 @@ export const config = {
 };
 
 export default async function middleware(req: NextRequest) {
-  const isDevelopment = process.env.NODE_ENV === "development";
+  const cookieStore = cookies();
+  const token = cookieStore.get(TOKEN_NAME);
 
   const protocol = isDevelopment ? "http" : "https";
   const url = req.nextUrl;
@@ -46,9 +48,6 @@ export default async function middleware(req: NextRequest) {
     }
 
     try {
-      const cookieStore = cookies();
-      const token = cookieStore.get(TOKEN_NAME);
-
       if (!token) {
         return NextResponse.redirect(new URL(`/`, urlPath));
       }
@@ -70,9 +69,6 @@ export default async function middleware(req: NextRequest) {
     }
 
     try {
-      const cookieStore = cookies();
-      const token = cookieStore.get(TOKEN_NAME);
-
       if (!token) {
         return NextResponse.redirect(new URL(`/redirect`, urlPath));
       }
