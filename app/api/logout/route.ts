@@ -12,7 +12,7 @@ import { verifyJwtToken } from "@/utils/jwt";
  * Log the user our of their session with Magic if it's still valid (valid for 7 days after initial login)
  * Redirect the user to /login
  */
-export async function POST() {
+export async function GET() {
   const cookieStore = cookies();
   const token = cookieStore.get(TOKEN_NAME);
 
