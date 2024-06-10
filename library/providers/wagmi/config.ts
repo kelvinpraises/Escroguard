@@ -1,15 +1,22 @@
 import { getDefaultConfig } from "connectkit";
 import { createConfig, http } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
+import { mainnet, sepolia, moonbaseAlpha } from "wagmi/chains";
+import { magicWalletConnector } from "./connectors/magic";
 
 export const config = createConfig(
   getDefaultConfig({
     // Your dApps chains
-    chains: [mainnet, sepolia],
+    chains: [mainnet, sepolia, moonbaseAlpha],
+    connectors: [
+      magicWalletConnector({
+        apiKey: process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY || "",
+      }),
+    ],
     transports: {
       // RPC URL for each chain
       [mainnet.id]: http(),
       [sepolia.id]: http(),
+      [moonbaseAlpha.id]: http(),
     },
 
     // Required API Keys
