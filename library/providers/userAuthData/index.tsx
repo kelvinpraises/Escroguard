@@ -7,6 +7,7 @@ import {
 } from "react";
 
 import { MagicUserMetadata, magicClient } from "@/services/magic/magicClient";
+import { useRouter } from "next/navigation";
 
 export type ExtendedMagicUserMetadata = MagicUserMetadata & {
   loading: boolean;
@@ -20,6 +21,7 @@ export const UserContext = createContext<
 >([undefined, () => {}]);
 
 const UserAuthDataProvider = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   const [user, setUser] = useState<Partial<ExtendedMagicUserMetadata>>();
 
   // If isLoggedIn is true, set the UserContext with user data
@@ -30,19 +32,17 @@ const UserAuthDataProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     setUser({ loading: true });
-    magicClient.user.isLoggedIn().then((isLoggedIn) => {
-      if (!magicClient) {
-        throw new Error("Magic instance is not available");
-      }
 
-      if (isLoggedIn) {
-        magicClient.user.getMetadata().then((userData) => {
-          return setUser(userData);
-        });
-      } else {
-        setUser(undefined);
-      }
-    });
+    fetch("/api/user")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.user) {
+          setUser(data.user);
+        } else {
+          setUser(undefined);
+          router.push("/login");
+        }
+      });
   }, []);
 
   return (

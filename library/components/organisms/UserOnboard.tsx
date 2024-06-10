@@ -1,14 +1,15 @@
 "use client";
 
-import Link from "next/link";
-
 import { UserContext } from "@/providers/userAuthData";
 import { magicClient } from "@/services/magic/magicClient";
 import { useContext } from "react";
 import Loading from "../atoms/Loading";
 import EmailLogin from "./EmailLogin";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const UserOnboard = () => {
+  const router = useRouter();
   const [user, setUser] = useContext(UserContext);
 
   const options = [
@@ -32,15 +33,6 @@ export const UserOnboard = () => {
     },
   ];
 
-  const logout = () => {
-    if (!magicClient) {
-      throw new Error("Magic instance is not available");
-    }
-
-    magicClient.user.logout().then(() => {
-      setUser(undefined);
-    });
-  };
   return (
     <>
       {user?.loading ? (
@@ -73,7 +65,15 @@ export const UserOnboard = () => {
             <div>User Id</div>
             <div>{user?.issuer}</div>
           </div>
-          <button className=" text-black" onClick={logout}>
+
+          <button
+            type="button"
+            className=" text-black"
+            onClick={() => {
+              setUser(undefined);
+              router.replace("/api/logout");
+            }}
+          >
             logout
           </button>
         </div>
