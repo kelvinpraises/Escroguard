@@ -25,7 +25,9 @@ export default function AuthLayout({
           <UserOnboard />
         </div>
       </div>
+      <div className="max-w-[450px] w-full flex h-full">
       {children}
+      </div>
     </div>
   );
 }

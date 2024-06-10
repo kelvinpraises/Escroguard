@@ -5,7 +5,7 @@ const JoinedSwaps = () => {
   const joined: any[] = [];
 
   return (
-    <div className="max-w-[450px] w-full p-8 flex flex-col gap-8">
+    <div className="p-8 flex flex-col gap-8">
       <p className="text-white text-5xl">Joined Swaps</p>
       <div className="flex flex-col gap-8">
         {joined.length ? (
