@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { getHostname } from "..";
+import { NextResponse } from "next/server";
 
 export const TOKEN_NAME = "escroguard_auth_token";
 const SESSION_LENGTH_IN_DAYS = parseInt(
@@ -25,10 +26,21 @@ export function setTokenCookie(token: string) {
           process.env.NEXT_PUBLIC_VERCEL_ENV ||
           ""
         }`
-      ) || "", // make cookie available on all subdomains TODO:
+      ) || "",
   });
 }
 
 export function removeTokenCookie() {
-  cookies().delete(TOKEN_NAME);
+  const cookieStore = cookies();
+  cookieStore.set(TOKEN_NAME, "", {
+    maxAge: -1,
+    domain:
+      getHostname(
+        `${
+          process.env.NEXT_PUBLIC_ROOT_DOMAIN ||
+          process.env.NEXT_PUBLIC_VERCEL_ENV ||
+          ""
+        }`
+      ) || "",
+  });
 }
